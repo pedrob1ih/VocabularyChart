@@ -28,6 +28,7 @@ public class MakeVocabulary {
     
     public static ArrayList makeVocabulary(String texto,ArrayList<String> ignoreWords){
         ArrayList<String> l = new ArrayList();
+        texto=texto.replaceAll("[\\s]+", " ");
         int i =0;
         String palabra="";
         char c=' ';
@@ -37,8 +38,9 @@ public class MakeVocabulary {
                 palabra+=c;
             }
             else{
-                if(!(palabra.contains(" ")) && !(palabra.equals("")))
-                    l.add(palabra);
+                l.add(palabra);
+                texto.replaceAll("["+palabra.toString()+"]", " ");
+                    
                 palabra="";
             }
             i++;
