@@ -1,5 +1,7 @@
 package sacarvocabulario;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -43,5 +45,15 @@ public class MakeVocabulary {
         }
         l.removeAll(ignoreWords);
         return l;        
+    }
+    
+    public static void saveFile(ArrayList<String> lText,String path) throws IOException{
+        FileWriter f= new FileWriter(new java.io.File(path));
+        String text="";
+        for (String o : lText) {
+            text+=o+" = \n";
+        }
+        f.write(text);
+        f.close();
     }
 }
