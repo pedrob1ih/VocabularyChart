@@ -12,7 +12,7 @@ public class SacarVocabulario {
     public static void main(String[] args) {
         try {
             ArrayList<String> ignore=new ArrayList();
-            ArrayList l=MakeVocabulary.makeVocabulary("hola   hola       adios asda      |@#|@#|@#|@ tu yo  mi me",ignore);
+            ArrayList l=MakeVocabulary.makeVocabulary("El panel A de la figura adjunta muestra un esquema de una región del genoma de ratón en cuya  secuencia se han detectado" ,ignore);
             for (Object o : l) {
                 System.out.println(((String)o));
             }

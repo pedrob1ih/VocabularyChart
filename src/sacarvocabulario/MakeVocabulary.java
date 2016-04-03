@@ -26,26 +26,55 @@ public class MakeVocabulary {
         return l;        
     }
     
-    public static ArrayList makeVocabulary(String texto,ArrayList<String> ignoreWords){
+    public static ArrayList<String> makeVocabularyRecursive(String texto,ArrayList<String> ignoreWords){
         ArrayList<String> l = new ArrayList();
         texto=texto.replaceAll("[\\s]+", " ");
+        l.removeAll(ignoreWords);
+        return algoritmVocabR(texto,l);
+    }
+    private static ArrayList<String> algoritmVocabR(String texto,ArrayList<String> l){
         int i =0;
         String palabra="";
         char c=' ';
+        if(i==texto.length())
+            return l;
         while(texto.length()>i){
             c=texto.charAt(i);
             if(c!=' '){
                 palabra+=c;
             }
             else{
+                if(palabra.equals(""))
                 l.add(palabra);
-                texto.replaceAll("["+palabra.toString()+"]", " ");
-                    
+                texto=texto.replaceAll(palabra+" ", "");
+                algoritmVocabR(texto,l);
+            }
+            i++;
+        }
+        return l;
+    }
+    
+    public static ArrayList makeVocabulary(String texto,ArrayList<String> ignoreWords){
+        ArrayList<String> l = new ArrayList();
+        texto=texto.replaceAll("[\\s]+", " ");
+//        texto=texto.replaceAll("\n", "#");
+        l.removeAll(ignoreWords);
+        int i =0;
+        String palabra="";
+        char c=' ';
+        while(texto.length()>i){
+            c=texto.charAt(i);
+            if(c!=' ')
+                palabra+=c;
+            else{
+                l.add(palabra);
+                texto=texto.replaceAll(palabra+" ", "");
+                i=-1;
                 palabra="";
             }
             i++;
         }
-        l.removeAll(ignoreWords);
+        l.add(palabra);
         return l;        
     }
     
