@@ -7,23 +7,25 @@ import java.util.ArrayList;
 
 public class MakeVocabulary {
     public static ArrayList makeVocabulary(String texto){
-        ArrayList l = new ArrayList();
+        ArrayList<String> l = new ArrayList();
+        texto=texto.replaceAll("[\\s]+", " ");
         int i =0;
         String palabra="";
         char c=' ';
         while(texto.length()>i){
             c=texto.charAt(i);
-            if(c!=' '){
+            if(c!=' ')
                 palabra+=c;
-            }
             else{
-                if(!(palabra.contains(" ")) && !(palabra.equals("")))
-                    l.add(palabra);
+                l.add(palabra);
+                texto=texto.replaceAll(palabra+" ", "");
+                i=-1;
                 palabra="";
             }
             i++;
         }
-        return l;        
+        l.add(palabra);
+        return l;              
     }
     
     public static ArrayList<String> makeVocabularyRecursive(String texto,ArrayList<String> ignoreWords){
@@ -57,7 +59,6 @@ public class MakeVocabulary {
     public static ArrayList makeVocabulary(String texto,ArrayList<String> ignoreWords){
         ArrayList<String> l = new ArrayList();
         texto=texto.replaceAll("[\\s]+", " ");
-//        texto=texto.replaceAll("\n", "#");
         l.removeAll(ignoreWords);
         int i =0;
         String palabra="";
@@ -67,10 +68,12 @@ public class MakeVocabulary {
             if(c!=' ')
                 palabra+=c;
             else{
+                if(palabra.equals(""))
+                    return l;        
                 l.add(palabra);
-                texto=texto.replaceAll(palabra+" ", "");
-                i=-1;
+                texto=deleteWord(palabra, texto);
                 palabra="";
+                i=-1;
             }
             i++;
         }
@@ -86,5 +89,29 @@ public class MakeVocabulary {
         }
         f.write(text);
         f.close();
+    }
+    
+    
+    private static String deleteWord(String regex,String text){
+        text=text.replaceAll("[\\s]+", " ");
+        String textOutput="";
+        String temp="";
+        char c=' ';
+        for (int i = 0; i < text.length(); i++) {
+            c=text.charAt(i);
+            if(c==' '){
+                if(!(temp.equals(regex))){
+//                    temp=temp.deleteWord("[\\s]*", "");
+                    textOutput+=temp+" ";    
+                }
+                temp="";
+                c=' ';
+            }
+            else
+                temp+=c;
+        }
+        if(!(temp.equals(regex)))
+            textOutput+=temp+" ";
+        return textOutput;
     }
 }
