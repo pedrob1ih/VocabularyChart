@@ -83,7 +83,6 @@ public class MakeVocabulary {
     
     public static void saveFile(ArrayList<String> lText,String path) throws IOException{
         FileWriter f= new FileWriter(new java.io.File(path));
-        System.out.println("paht "+path);
         String text="";
         for (String o : lText) {
             text+=o+" = \n";

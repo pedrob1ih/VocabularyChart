@@ -7,15 +7,7 @@ public class SacarVocabulario {
 
     
     public static void main(String[] args) throws IOException {
-        String imput[]= new String[3];
-        imput=args;
-//        imput[0]="-s";
-//        imput[1]="aaa bbb ccc ddd eee fff ggg";
-////        imput[2]="//home//yoportatil//Escritorio";
-//        imput[2]="texto.txt";
-//        for (int i = 0; i < imput.length; i++) {
-//            System.out.println(imput[i]+"   "+i);
-//        }
+        String imput[]= args;
         if(imput.length>0){
             String opcion =imput[0];
             if(opcion.charAt(0)=='-' && imput.length>1){
@@ -23,7 +15,7 @@ public class SacarVocabulario {
                 case 's':
                     if (imput.length>2) {
                         MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), System.getProperty("user.dir")+"/"+imput[2]);
-                        System.out.println("File saved!");
+                        System.out.println("File "+imput[2]+" saved!");
                     }
                     else
                         System.out.println("you must indicate the name of the file!");
@@ -31,7 +23,7 @@ public class SacarVocabulario {
                 case 'p':
                     if (imput.length>3) {
                         MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), imput[2]+"/"+imput[3]);
-                        System.out.println("File saved!");
+                        System.out.println("File saved in "+imput[2]);
                     }
                     else
                         System.out.println("you must to indicate the paht and the name of the file!");
