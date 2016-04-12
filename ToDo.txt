@@ -1,0 +1,15 @@
+mode 1
+	to create the vocavulary chart in the terminal
+		first parameter "<text/>"
+	
+	-s saves the vocavulary chart into a file in the actual path
+		first "<text/>"
+	
+	-p saves the vocavulary chart into the especified paht
+		first "<text/>"
+		second paht
+	
+	-v vervose, shows the vocavulary chart into the terminal
+	
+	--xml create chart in a xml format
+
