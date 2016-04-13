@@ -7,9 +7,9 @@ mode 1
 	
 	-p saves the vocavulary chart into the especified paht
 		first "<text/>"
-		second paht
+		second "paht"
 	
 	-v vervose, shows the vocavulary chart into the terminal
 	
-	--xml create chart in a xml format
-
+	--xml create chart in a xml format(NotImplemented)
+		

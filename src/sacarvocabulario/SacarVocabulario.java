@@ -8,7 +8,22 @@ public class SacarVocabulario {
     
     public static void main(String[] args) throws IOException {
         String imput[]= args;
-        if(imput.length>0){
+        if(imput[0].equals("--help")){
+            System.out.println("to create the vocavulary chart in the terminal\n" +
+"		first parameter \"<text/>\"\n" +
+"	\n" +
+"	-s saves the vocavulary chart into a file in the actual path\n" +
+"		first \"<text/>\"\n" +
+"	\n" +
+"	-p saves the vocavulary chart into the especified paht\n" +
+"		first \"<text/>\"\n" +
+"		second \"paht\"\n" +
+"	\n" +
+"	-v vervose, shows the vocavulary chart into the terminal\n" +
+"	\n" +
+"	--xml create chart in a xml format(NotImplemented)");
+        }
+        else if(imput.length>0){
             String opcion =imput[0];
             if(opcion.charAt(0)=='-' && imput.length==2){
                 switch(opcion.charAt(1)){
