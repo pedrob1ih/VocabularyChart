@@ -1,5 +1,5 @@
 # VocabularyChart
-Java library and app to create a list from an input text. Is useful to study the vocabulary of a certain book
+Java library and app to create a list from an input text. Is useful to study the vocabulary of a certain text
 
 ##How To Use
 just execute the .jar whith ``` java -jar VocabularyChart.jar "text" ```
