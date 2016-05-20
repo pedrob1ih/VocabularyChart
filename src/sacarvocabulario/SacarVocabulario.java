@@ -8,7 +8,6 @@ public class SacarVocabulario {
     
     public static void main(String[] args) throws IOException {
         String imput[]= args;
-        
         if(imput.length>0){
             String opcion =imput[0];
             if(imput[0].equals("--help")){
@@ -17,27 +16,29 @@ public class SacarVocabulario {
         "	\n" +
         "	-s saves the vocavulary chart into a file in the actual path\n" +
         "		first \"<text/>\"\n" +
+        "               second \"<name of the file/>\"\n"+
         "	\n" +
         "	-p saves the vocavulary chart into the especified paht\n" +
         "		first \"<text/>\"\n" +
         "		second \"paht\"\n" +
+        "               third \"<name of the file/>\"\n"+
         "	\n" +
         "	-v vervose, shows the vocavulary chart into the terminal\n" +
         "	\n" +
-        "	--xml create chart in a xml format(NotImplemented)");
+        "	--xml create chart in a xml format(NotImplemented yet)");
             }
-            else if(opcion.charAt(0)=='-' && imput.length==2){
+            else if(opcion.charAt(0)=='-'){
                 switch(opcion.charAt(1)){
                     case 's':
-                        if (imput.length>2) {
+                        if (imput.length==3) {
                             MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), System.getProperty("user.dir")+"/"+imput[2]);
                             System.out.println("File "+imput[2]+" saved!");
                         }
-                        else
+                        else    
                             System.out.println("you must indicate the name of the file!");
                         break;
                     case 'p':
-                        if (imput.length>3) {
+                        if (imput.length==4) {
                             MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), imput[2]+"/"+imput[3]);
                             System.out.println("File saved in "+imput[2]);
                         }
