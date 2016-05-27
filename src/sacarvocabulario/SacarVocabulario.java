@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 public class SacarVocabulario {
 
-    
     public static void main(String[] args) throws IOException {
+        
         String imput[]= args;
+//        String imput[]= new String[]{"-v","Niccolò di Bernardo dei Machiavelli (Italian: [nikkoˈlɔ mmakjaˈvɛlli]; 3 May 1469 – 21 June 1527) was an Italian Renaissance historian, politician, diplomat, philosopher, humanist, and writer. He has often been called the founder of modern political science.[1] He was for many years a senior official in the Florentine Republic, with responsibilities in diplomatic and military affairs. He also wrote comedies, carnival songs, and poetry. His personal correspondence is renowned in the Italian language. He was secretary to the Second Chancery of the Republic of Florence from 1498 to 1512, when the Medici were out of power. He wrote his most renowned work The Prince (Il Principe) in 1513. Machiavellianism  is a widely used negative term to characterize unscrupulous politicians of the sort Machiavelli described most famously in The Prince. Machiavelli described immoral behavior, such as dishonesty and killing innocents, as being normal and effective in politics. He even seemed to endorse it in some situations. The book itself gained notoriety when some readers claimed that the author was teaching evil, and providing  evil recommendations to tyrants to help them maintain their power. [2] The term  Machiavellian  is often associated with political deceit, deviousness, and realpolitik. On the other hand, many commentators, such as Baruch Spinoza, Jean-Jacques Rousseau and Denis Diderot, have argued that Machiavelli was actually a republican, even when writing The Prince, and his writings were an inspiration \n                   to Enlightenment proponents of modern democratic political philosophy","textoPrueva.txt"};
         if(imput.length>0){
             String opcion =imput[0];
             if(imput[0].equals("--help")){
@@ -15,7 +16,7 @@ public class SacarVocabulario {
         "		first parameter \"<text/>\"\n" +
         "	\n" +
         "	-s saves the vocavulary chart into a file in the actual path\n" +
-        "		first \"<text/>\"\n" +
+        "		first \"<text/>\"\n" +      
         "               second \"<name of the file/>\"\n"+
         "	\n" +
         "	-p saves the vocavulary chart into the especified paht\n" +
@@ -39,7 +40,7 @@ public class SacarVocabulario {
                         break;
                     case 'p':
                         if (imput.length==4) {
-                            MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), imput[2]+"/"+imput[3]);
+                            MakeVocabulary.saveFile(MakeVocabulary.makeVocabulary(imput[1]), imput[2]+imput[3]);
                             System.out.println("File saved in "+imput[2]);
                         }
                         else
