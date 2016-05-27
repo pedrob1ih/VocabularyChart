@@ -9,7 +9,5 @@ Download the .jar **[here](https://github.com/pedrob1ih/VocabularyChart/raw/inte
 
 
 ##How To Use
-just execute the .jar whith ``` java -jar VocabularyChart.jar "text" ```
-
-####To Know The Options Of The Application 
-run ``` java -jar VocabularyChart.jar --help ```
+just execute the .jar whith ``` java -jar VocabularyChart.jar ```
+pastle the text in the top box and press the button
