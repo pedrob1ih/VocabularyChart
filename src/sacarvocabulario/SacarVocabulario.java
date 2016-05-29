@@ -122,6 +122,23 @@ public class SacarVocabulario {
                 printVocavulary(l);
             }
         }
+	else{
+            System.out.println("to create the vocavulary chart in the terminal\n" +
+        "               first parameter \"<text/>\"\n" +
+        "       \n" +
+        "       -s saves the vocavulary chart into a file in the actual path\n" +
+        "               first \"<text/>\"\n" +      
+        "               second \"<name of the file/>\"\n"+
+        "       \n" +
+        "       -p saves the vocavulary chart into the especified paht\n" +
+        "               first \"<text/>\"\n" +
+        "               second \"paht\"\n" +
+        "               third \"<name of the file/>\"\n"+
+        "       \n" +
+        "       -v vervose, shows the vocavulary chart into the terminal\n" +
+        "       \n" +
+        "       --xml create chart in a xml format(NotImplemented yet)");
+	}
     }
     public static void printVocavulary(ArrayList<String> l){
         for (String l1 : l) {
