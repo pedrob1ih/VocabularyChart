@@ -9,9 +9,9 @@ public class MakeVocabulary{
     public static ArrayList makeVocabulary(String texto){
         ArrayList<String> l = new ArrayList();
         boolean existe=false;
-        System.out.println("TEXTO CON CARATERES ::"+texto);
+//        System.out.println("TEXTO CON CARATERES ::"+texto);
         texto=excludedCharacters(texto);
-        System.out.println("TEXTO SIN CARATERES ::"+texto);
+//        System.out.println("TEXTO SIN CARATERES ::"+texto);
         int i =0;
         String palabra="";
         char c=' ';
@@ -23,8 +23,7 @@ public class MakeVocabulary{
                 if(l.isEmpty()){
                     l.add(palabra);
                     existe=true;
-                }
-                    
+                }   
                 else
                     for (String l1 : l) {
                         if(l1.compareTo(palabra)==0 ){
