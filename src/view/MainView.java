@@ -100,8 +100,11 @@ public class MainView extends javax.swing.JFrame {
         String output="";
         ArrayList<String> l=MakeVocabulary.makeVocabulary(imput.getText());
         for (String s : l) {
-            output+=s+" = \n"; 
+            output+="\n"+s+" = \n"; 
+//            if(!imput.getText().contains(s))
+//                System.out.println("ERROR no coincide la palabra");
         }
+        
         
         outPut.setText(output);
     }//GEN-LAST:event_jButton1ActionPerformed
