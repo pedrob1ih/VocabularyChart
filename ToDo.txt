@@ -4,4 +4,17 @@ Make possible export as xml
 Make possible export as html
 
 
+ventajas de una base de datos
+	
+	con una base de datos se puede dar formato mas facilmente
+	
+	**********************se puede hacer una lista conjunta de palabras y significado
+	
+	**********************se puede hacer una interfaz con una tabla donde una columna sea la palabra en inglés y la otra su significado
+				y con un listener hacer un tipo de examen
+	
+	se puede hacer un una tabla donde se encuentren las palabras que se deban ignorar las palabras que se ignoren pueden ser las que ya
+		se han respondido correctamente y palabras muy simples
 
+
+	
