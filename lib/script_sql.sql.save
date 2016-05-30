@@ -1,4 +1,0 @@
-CREATE TABLE palabras (nombre )
-tabla palabra (nombre (pk), singnificado, fecha_addicion )
-
-tabla aciertos_fallos (nombre (pk), acierto_fallo, fecha)
