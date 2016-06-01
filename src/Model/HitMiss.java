@@ -1,5 +1,8 @@
 package Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 
@@ -7,12 +10,28 @@ public class HitMiss {
     
     private String word;
     private boolean hit;
-    private Calendar hitDate;
+    private Timestamp insertionDate;
 
-    public HitMiss(String word, boolean hit, Calendar hitDate) {
+    public HitMiss(String word, boolean hit) {
         this.word = word;
         this.hit = hit;
-        this.hitDate = hitDate;
+        this.insertionDate = 
+                new Timestamp(Calendar.getInstance().getTime().getTime());
+    }
+    
+    
+    public int insert() throws SQLException{
+        return H2DB.getInstance().getSt()
+                .executeUpdate("insert into hit_miss values ('"+this.word+"',"+this.hit+",CURRENT_TIMESTAMP)");
+    }
+    public int delete() throws SQLException{
+        return H2DB.getInstance().getSt()
+                .executeUpdate("DELETE FROM hit_miss where word='"+this.word+"'");
+    }
+    public boolean exist() throws SQLException{
+        ResultSet resultSet=H2DB.getInstance().getSt().
+                executeQuery("select * from hit_miss where word='"+this.word+"'");
+        return resultSet.next();
     }
 
     public String getWord() {
@@ -23,7 +42,8 @@ public class HitMiss {
         return hit;
     }
 
-    public Calendar getHitDate() {
-        return hitDate;
+    public Timestamp getHitDate() {
+        return insertionDate;
     }
+    
 }
