@@ -1,33 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-/**
- *
- * @author yoportatil
- */
-public class InsertingText extends javax.swing.JPanel {
+import Model.MakeVocabulary;
+import Model.Word;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class InsertingTextPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form InsertingText
      */
-    public InsertingText() {
+    public InsertingTextPanel() {
         initComponents();
     }
 
-    @Override
-    public void setVisible(boolean aFlag) {
-        if(!aFlag)
-            eraseText();
-        super.setVisible(aFlag); 
-    }
-    private void eraseText(){
-        jTAImput.setText("");
-        jTAOutput.setText("");
-    }
+//    @Override
+//    public void setVisible(boolean aFlag) {
+//        if(!aFlag)
+//            eraseText();
+//        super.setVisible(aFlag); 
+//    }
+//    private void eraseText(){
+//        jTAImput.setText("");
+//        jTAOutput.setText("");
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,13 +44,19 @@ public class InsertingText extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTAOutput = new javax.swing.JTextArea();
 
-        setPreferredSize(new java.awt.Dimension(550, 350));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jTAImput.setColumns(20);
         jTAImput.setRows(5);
         jSPImput.setViewportView(jTAImput);
 
         jBCreate.setText("Create");
+        jBCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBCreateActionPerformed(evt);
+            }
+        });
 
         JBCopy.setText("Copy");
         JBCopy.addActionListener(new java.awt.event.ActionListener() {
@@ -70,15 +75,12 @@ public class InsertingText extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSPImput, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBCreate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JBCopy)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
+                .addComponent(jBCreate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JBCopy)
+                .addContainerGap(631, Short.MAX_VALUE))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSPImput, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,14 +92,32 @@ public class InsertingText extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSPImput, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void JBCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBCopyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JBCopyActionPerformed
+
+    private void jBCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCreateActionPerformed
+        ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
+        String listaPalabras="";
+        for (Object list1 : list) {
+            try {
+                Word w= new Word((String) list1);
+                listaPalabras+="\n"+w.getWord()+" = ";
+                if(!w.exist()){
+                    w.insert();
+                    System.out.println("palabra "+(String)list1+" insertada");
+                }
+                    
+            } catch (SQLException ex) {
+                Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        jTAOutput.setText(listaPalabras);
+    }//GEN-LAST:event_jBCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

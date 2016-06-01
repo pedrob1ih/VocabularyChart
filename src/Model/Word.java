@@ -11,6 +11,12 @@ public class Word {
     private String meaning;
     private Timestamp insertionDate;
 
+    public Word(String word) {
+        this.word = word;
+        this.meaning = "";
+        this.insertionDate = 
+                new Timestamp(Calendar.getInstance().getTime().getTime());
+    }
     public Word(String word, String meaning) {
         this.word = word;
         this.meaning = meaning;
