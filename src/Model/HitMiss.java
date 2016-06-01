@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 
 public class HitMiss {
+    
     private String word;
     private boolean hit;
     private Calendar hitDate;

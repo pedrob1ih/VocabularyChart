@@ -16,5 +16,5 @@ ventajas de una base de datos
 	se puede hacer un una tabla donde se encuentren las palabras que se deban ignorar las palabras que se ignoren pueden ser las que ya
 		se han respondido correctamente y palabras muy simples
 
-
-	
+	** una pantalla donde meter el texto a la base de datos
+	** 
