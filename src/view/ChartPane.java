@@ -7,9 +7,7 @@ package view;
 
 import Model.Word;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,18 +15,26 @@ import java.util.logging.Logger;
  */
 public class ChartPane extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ChartPane
-     */
+    private DefaultTableModel datos;
+    
     public ChartPane() {
         try {
             initComponents();
-            ArrayList<Word> l=Word.selectWhere(null);
-            int i=-1;
-            for (Word w : l) {
-                jTable1.getModel().setValueAt(w.getWord(), -1, i);
-                jTable1.getModel().setValueAt(w.getMeaning(), 0, i);
-                jTable1.getModel().setValueAt(w.getInsertionDate(), 1, i);
+            datos = new DefaultTableModel();
+            datos.addColumn("Word");
+            datos.addColumn("Meaning");
+            datos.addColumn("Insertion Date");
+            jTable1.setModel(datos);
+            
+            int i=1;
+            for (Word w : Word.selectWhere(null)) {
+                Object object[]=new Object[]{w.getWord(),w.getMeaning(),w.getInsertionDate()};
+                datos.addRow(object);
+//                datos.addColumn(w.getMeaning());
+//                datos.setValueAt(w.getWord(), i, 1);
+//                datos.setValueAt(w.getMeaning(), i, 2);
+//                datos.setValueAt(w.getInsertionDate(), i, 3);
+//                i++;
             }
             
         } catch (SQLException ex) {
@@ -64,17 +70,11 @@ public class ChartPane extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
