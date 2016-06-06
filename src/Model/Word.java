@@ -3,6 +3,7 @@ package Model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Word {
@@ -42,6 +43,23 @@ public class Word {
         return resultSet.next();
     }
     
+    public static ArrayList<Word> selectWhere(String select) throws SQLException{
+        ArrayList<Word> l= new ArrayList<>();
+        ResultSet resultSet;
+        if(select==null){
+            resultSet=H2DB.getInstance().getSt().
+                executeQuery("select * from words");
+        }
+        else
+            resultSet=H2DB.getInstance().getSt().
+                executeQuery(select);
+        
+        while (resultSet.next()) {
+            Word w= new Word(resultSet.getString(1),resultSet.getString(2));
+            l.add(w);
+        }
+        return l;
+    }
 
     public String getWord() {
         return word;
@@ -65,6 +83,5 @@ public class Word {
 
     public void setInsertionDate(Timestamp insertionDate) {
         this.insertionDate = insertionDate;
-    }
-    
+    }    
 }

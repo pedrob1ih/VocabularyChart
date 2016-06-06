@@ -43,6 +43,7 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         JBCopy = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTAOutput = new javax.swing.JTextArea();
+        jBSelect = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -69,6 +70,13 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         jTAOutput.setRows(5);
         jScrollPane2.setViewportView(jTAOutput);
 
+        jBSelect.setText("Select");
+        jBSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBSelectActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,7 +86,9 @@ public class InsertingTextPanel extends javax.swing.JPanel {
                 .addComponent(jBCreate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(JBCopy)
-                .addContainerGap(631, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jBSelect)
+                .addContainerGap(547, Short.MAX_VALUE))
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jSPImput, javax.swing.GroupLayout.Alignment.TRAILING)
         );
@@ -88,7 +98,8 @@ public class InsertingTextPanel extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBCreate)
-                    .addComponent(JBCopy))
+                    .addComponent(JBCopy)
+                    .addComponent(jBSelect))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSPImput, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,10 +130,24 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         jTAOutput.setText(listaPalabras);
     }//GEN-LAST:event_jBCreateActionPerformed
 
+    private void jBSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSelectActionPerformed
+        try {
+            ArrayList<Word> l=Word.selectWhere(null);
+            String outPut="";
+            for (Word l1 : l) {
+                outPut+=l1.getWord()+" = "+l1.getMeaning()+"\n";
+            }
+            jTAOutput.setText(outPut);
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jBSelectActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBCopy;
     private javax.swing.JButton jBCreate;
+    private javax.swing.JButton jBSelect;
     private javax.swing.JScrollPane jSPImput;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTAImput;

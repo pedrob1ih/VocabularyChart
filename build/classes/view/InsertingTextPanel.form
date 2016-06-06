@@ -29,7 +29,9 @@
               <Component id="jBCreate" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="JBCopy" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="631" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jBSelect" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="547" max="32767" attributes="0"/>
           </Group>
           <Component id="jScrollPane2" alignment="1" max="32767" attributes="0"/>
           <Component id="jSPImput" alignment="1" max="32767" attributes="0"/>
@@ -42,6 +44,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jBCreate" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="JBCopy" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jBSelect" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jSPImput" min="-2" pref="119" max="-2" attributes="0"/>
@@ -92,5 +95,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="jBSelect">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jBSelectActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
