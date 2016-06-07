@@ -63,13 +63,17 @@ public class Word {
     public static ArrayList<Word> selectWhere(String where) throws SQLException{
         ArrayList<Word> l= new ArrayList<>();
         ResultSet resultSet;
+        String select="select * from words ";
+        String select2=" order by word";
         if(where==null){
             resultSet=H2DB.getInstance().getSt().
-                executeQuery("select * from words order by word");
+                executeQuery(select+select2);
         }
-        else
+        else{
+            String debugasd=select+where+select2;
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(where);
+                executeQuery(select+where+select2);
+        }
         
         while (resultSet.next()) {
             Word w= new Word(resultSet.getString(1),resultSet.getString(2));

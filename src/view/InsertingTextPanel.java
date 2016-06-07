@@ -20,17 +20,6 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-//    @Override
-//    public void setVisible(boolean aFlag) {
-//        if(!aFlag)
-//            eraseText();
-//        super.setVisible(aFlag); 
-//    }
-//    private void eraseText(){
-//        jTAImput.setText("");
-//        jTAOutput.setText("");
-//    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
