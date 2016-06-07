@@ -11,23 +11,40 @@ public class Word {
     private String word;
     private String meaning;
     private Timestamp insertionDate;
+    private boolean ignoredWord;
 
+    public Word(String word,boolean ignoredWord) {
+        this.word = word;
+        this.meaning = "";
+        this.insertionDate = 
+                new Timestamp(Calendar.getInstance().getTime().getTime());
+        this.ignoredWord=ignoredWord;
+    }
+    public Word(String word, String meaning,boolean ignoredWord) {
+        this.word = word;
+        this.meaning = meaning;
+        this.insertionDate = 
+                new Timestamp(Calendar.getInstance().getTime().getTime());
+        this.ignoredWord=ignoredWord;
+    }
     public Word(String word) {
         this.word = word;
         this.meaning = "";
         this.insertionDate = 
                 new Timestamp(Calendar.getInstance().getTime().getTime());
+        this.ignoredWord=false;
     }
     public Word(String word, String meaning) {
         this.word = word;
         this.meaning = meaning;
         this.insertionDate = 
                 new Timestamp(Calendar.getInstance().getTime().getTime());
+        this.ignoredWord=false;
     }
     
     public int insert() throws SQLException{
         return H2DB.getInstance().getSt()
-                .executeUpdate("INSERT INTO words values('"+this.word+"','"+this.meaning+"',CURRENT_TIMESTAMP)");
+                .executeUpdate("INSERT INTO words values('"+this.word+"','"+this.meaning+"',CURRENT_TIMESTAMP,"+this.ignoredWord+")");
     }
     public int delete() throws SQLException{
         return H2DB.getInstance().getSt()
@@ -35,7 +52,7 @@ public class Word {
     }
     public int update() throws SQLException{
         return H2DB.getInstance().getSt
-        ().executeUpdate("UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP where word='"+this.word+"'");
+        ().executeUpdate("UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP, "+this.ignoredWord+" where word='"+this.word+"'");
     }
     public boolean exist() throws SQLException{
         ResultSet resultSet=H2DB.getInstance().getSt().

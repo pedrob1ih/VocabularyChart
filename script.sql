@@ -5,6 +5,7 @@ CREATE TABLE words  (
         word char(50) NOT NULL,
         meaning char(50) NOT NULL,
 	DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	ignoredWord BOOLEAN NOT NULL,
         PRIMARY KEY (word)
 );
 CREATE TABLE hit_miss (
@@ -14,5 +15,3 @@ CREATE TABLE hit_miss (
         PRIMARY KEY (word),
         FOREIGN KEY(word) REFERENCES words(word)
 );
-insert into words values ('hello','hola',CURRENT_TIMESTAMP)
-update words set word='adios' , MEANING='CALABAZA' , DATE='CURRENT_TIMESTAMP' where word='hello'

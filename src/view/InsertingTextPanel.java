@@ -2,6 +2,9 @@ package view;
 
 import Model.MakeVocabulary;
 import Model.Word;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -108,7 +111,9 @@ public class InsertingTextPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JBCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBCopyActionPerformed
-        // TODO add your handling code here:
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        StringSelection data = new StringSelection(this.jTAOutput.getText());
+        clipboard.setContents(data, data);
     }//GEN-LAST:event_JBCopyActionPerformed
 
     private void jBCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCreateActionPerformed
