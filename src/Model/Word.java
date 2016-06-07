@@ -35,7 +35,7 @@ public class Word {
     }
     public int update() throws SQLException{
         return H2DB.getInstance().getSt
-        ().executeUpdate("UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date='CURRENT_TIMESTAMP' where word='"+this.word+"'");
+        ().executeUpdate("UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP where word='"+this.word+"'");
     }
     public boolean exist() throws SQLException{
         ResultSet resultSet=H2DB.getInstance().getSt().
@@ -43,16 +43,16 @@ public class Word {
         return resultSet.next();
     }
     
-    public static ArrayList<Word> selectWhere(String select) throws SQLException{
+    public static ArrayList<Word> selectWhere(String where) throws SQLException{
         ArrayList<Word> l= new ArrayList<>();
         ResultSet resultSet;
-        if(select==null){
+        if(where==null){
             resultSet=H2DB.getInstance().getSt().
-                executeQuery("select * from words");
+                executeQuery("select * from words order by word");
         }
         else
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(select);
+                executeQuery(where);
         
         while (resultSet.next()) {
             Word w= new Word(resultSet.getString(1),resultSet.getString(2));
