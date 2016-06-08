@@ -51,8 +51,9 @@ public class Word {
                 .executeUpdate("DELETE FROM words where word='"+this.word+"'");
     }
     public int update() throws SQLException{
-        return H2DB.getInstance().getSt
-        ().executeUpdate("UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP, "+this.ignoredWord+" where word='"+this.word+"'");
+        String slq="UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP, ignoredWord="+this.ignoredWord+" where word='"+this.word+"'";
+//        System.out.println(slq);
+        return H2DB.getInstance().getSt().executeUpdate(slq);
     }
     public boolean exist() throws SQLException{
         ResultSet resultSet=H2DB.getInstance().getSt().
@@ -70,18 +71,22 @@ public class Word {
                 executeQuery(select+select2);
         }
         else{
-            String debugasd=select+where+select2;
             resultSet=H2DB.getInstance().getSt().
                 executeQuery(select+where+select2);
         }
         
         while (resultSet.next()) {
-            Word w= new Word(resultSet.getString(1),resultSet.getString(2));
+            Word w= new Word(resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(4));
             l.add(w);
         }
         return l;
     }
 
+    public boolean isIgnoredWord() {
+        return ignoredWord;
+    }
+
+    
     public String getWord() {
         return word;
     }

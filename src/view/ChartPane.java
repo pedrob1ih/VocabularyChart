@@ -6,17 +6,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author root
- */
 public class ChartPane extends javax.swing.JPanel {
 
     private DefaultTableModel datos;
+    //whatShow=0 -- notIgnore
+    //whatShow=1 -- ignore
+    //whatShow=2 -- all
+    private int whatShow;
     
     public ChartPane() {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
         try {
             fillTable();
         } catch (SQLException ex) {
@@ -30,11 +31,14 @@ public class ChartPane extends javax.swing.JPanel {
         switch(jCBWordType.getSelectedIndex()){
             case 0:
                 select="where ignoredWord=false";
+                whatShow=0;
                 break;
             case 1:
                 select="where ignoredWord=true";
+                whatShow=1;
                 break;
             case 2:
+                whatShow=2;
                 //to be null
                 ;
                 break;
@@ -43,16 +47,20 @@ public class ChartPane extends javax.swing.JPanel {
         //delete all the rows
         while(datos.getRowCount()>0)
             datos.removeRow(datos.getRowCount()-1);
-//        int nRowCount=datos.getRowCount();
-//        for(int i=0;i<nRowCount;i++)
-//            
         
         for (Word w : Word.selectWhere(select)) {
             if(w!=null){
-                Object object[]=new Object[]{w.getWord(),w.getMeaning(),w.getInsertionDate()};
-            datos.addRow(object);
+                if(w.isIgnoredWord()){
+                    Object object[]=new Object[]{true,w.getWord(),w.getMeaning(),w.getInsertionDate()};
+                    datos.addRow(object);
+                }
+                else{
+                    Object object[]=new Object[]{false,w.getWord(),w.getMeaning(),w.getInsertionDate()};
+                    datos.addRow(object);
+                }
             }
         }
+        
     }
 
     /**
@@ -71,14 +79,30 @@ public class ChartPane extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(800, 600));
 
+        jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Word", "Meaing", "InsertionDate"
+                "Ignored Word", "Word", "Meaing", "InsertionDate"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Save");
@@ -115,12 +139,11 @@ public class ChartPane extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,17 +157,59 @@ public class ChartPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        for(int i = 0;i<datos.getRowCount();i++){
-            String nombre=(String)datos.getValueAt(i,1);
-            if(!nombre.equals("")){
-                try {
-                    Word w= new Word((String)datos.getValueAt(i, 0), (String)datos.getValueAt(i, 1));
-                    w.update();
-                }
-                catch (SQLException ex) {
-                    Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        try {
+            //whatShow=0 -- notIgnore
+            //whatShow=1 -- ignore
+            //whatShow=2 -- all
+            Word w;
+            switch(whatShow){
+                case 0:
+                    // the meaning have to be filled or the not ignore checked
+                    for(int i = 0;i<datos.getRowCount();i++){
+                        boolean ignored=(boolean)datos.getValueAt(i,0);
+                        String meaning=(String)datos.getValueAt(i,2);
+                        if(ignored || !meaning.equals("")){
+                            w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                            try {
+                                w.update();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    // the notIgnore have to be unchecked
+                    for(int i = 0;i<datos.getRowCount();i++){
+                        boolean ignored=(boolean)datos.getValueAt(i,0);
+                        String meaning=(String)datos.getValueAt(i,2);
+                        if(!ignored){
+                            w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                            try {
+                                w.update();
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    // save every thing
+                    for(int i = 0;i<datos.getRowCount();i++){
+                        boolean ignored=(boolean)datos.getValueAt(i,0);
+                        String meaning=(String)datos.getValueAt(i,2);
+                        w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                        try {
+                            w.update();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
             }
+            fillTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -153,11 +218,7 @@ public class ChartPane extends javax.swing.JPanel {
     }//GEN-LAST:event_jCBWordTypeActionPerformed
 
     private void jCBWordTypePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBWordTypePropertyChange
-//        try {
-//            fillTable();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        ;
     }//GEN-LAST:event_jCBWordTypePropertyChange
 
     private void jCBWordTypeHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jCBWordTypeHierarchyChanged
