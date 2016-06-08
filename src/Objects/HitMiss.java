@@ -1,5 +1,6 @@
-package Model;
+package Objects;
 
+import Model.H2DB;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;

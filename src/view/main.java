@@ -1,7 +1,7 @@
 package view;
 
-import Model.HitMiss;
-import Model.Word;
+import Objects.HitMiss;
+import Objects.Word;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

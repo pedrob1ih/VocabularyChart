@@ -16,9 +16,11 @@ ventajas de una base de datos
 
 	^una pantalla donde meter el texto a la base de datos
 	
-	*se puede hacer un una tabla donde se encuentren las palabras que se deban ignorar las palabras que se ignoren pueden ser las que ya
+	^se puede hacer un una tabla donde se encuentren las palabras que se deban ignorar las palabras que se ignoren pueden ser las que ya
 		se han respondido correctamente y palabras muy simples
 
+	*implementar dos modos en el panel de chartPanel de modo que se pueda hacer una revision de todas las palbras o un test de una parte 
+		del conjunto
 	
 
 ******************************************************************************+

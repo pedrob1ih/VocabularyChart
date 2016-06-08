@@ -1,7 +1,9 @@
 package view;
 
-import Model.Word;
+import Objects.Word;
+import Objects.WordsGroup;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JToolTip;
@@ -62,14 +64,9 @@ public class ChartPane extends javax.swing.JPanel {
         
         for (Word w : Word.selectWhere(select)) {
             if(w!=null){
-                if(w.isIgnoredWord()){
-                    Object object[]=new Object[]{true,w.getWord(),w.getMeaning(),w.getInsertionDate()};
-                    datos.addRow(object);
-                }
-                else{
-                    Object object[]=new Object[]{false,w.getWord(),w.getMeaning(),w.getInsertionDate()};
-                    datos.addRow(object);
-                }
+                String nameGroup=WordsGroup.select("where id='"+w.getIdWordGoup()+"'").get(0).getName();
+                Object object[]=new Object[]{nameGroup,w.getWord(),w.getMeaning(),w.getInsertionDate(),w.isIgnoredWord()};
+                datos.addRow(object);
             }
         }
         
@@ -86,10 +83,10 @@ public class ChartPane extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jBSave = new javax.swing.JButton();
         jCBWordType = new javax.swing.JComboBox();
 
-        setPreferredSize(new java.awt.Dimension(0, 0));
+        setPreferredSize(new java.awt.Dimension(800, 494));
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -97,14 +94,14 @@ public class ChartPane extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Ignored Word", "Word", "Meaing", "InsertionDate"
+                "Group Name", "Word", "Meaing", "InsertionDate", "Ignored Word"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, false
+                false, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -117,10 +114,10 @@ public class ChartPane extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBSave.setText("Save");
+        jBSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jBSaveActionPerformed(evt);
             }
         });
 
@@ -154,27 +151,26 @@ public class ChartPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 594, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                        .addComponent(jBSave))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBSave))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
         try {
             //whatShow=0 -- notIgnore
             //whatShow=1 -- ignore
@@ -184,10 +180,11 @@ public class ChartPane extends javax.swing.JPanel {
                 case 0:
                     // the meaning have to be filled or the not ignore checked
                     for(int i = 0;i<datos.getRowCount();i++){
-                        boolean ignored=(boolean)datos.getValueAt(i,0);
+                        boolean ignored=(boolean)datos.getValueAt(i,4);
                         String meaning=(String)datos.getValueAt(i,2);
                         if(ignored || !meaning.equals("")){
-                            w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                            int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                            w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                             try {
                                 w.update();
                             } catch (SQLException ex) {
@@ -199,10 +196,11 @@ public class ChartPane extends javax.swing.JPanel {
                 case 1:
                     // the notIgnore have to be unchecked
                     for(int i = 0;i<datos.getRowCount();i++){
-                        boolean ignored=(boolean)datos.getValueAt(i,0);
+                        boolean ignored=(boolean)datos.getValueAt(i,4);
                         String meaning=(String)datos.getValueAt(i,2);
                         if(ignored || !meaning.equals("")){
-                            w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                            int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                            w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                             try {
                                 w.update();
                             } catch (SQLException ex) {
@@ -214,7 +212,8 @@ public class ChartPane extends javax.swing.JPanel {
                 case 2:
                     // save every thing
                     for(int i = 0;i<datos.getRowCount();i++){
-                        w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
+                        int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                        w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                         try {
                             w.update();
                         } catch (SQLException ex) {
@@ -227,7 +226,7 @@ public class ChartPane extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jBSaveActionPerformed
 
     private void jCBWordTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBWordTypeActionPerformed
         ;
@@ -251,7 +250,7 @@ public class ChartPane extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jBSave;
     private javax.swing.JComboBox jCBWordType;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

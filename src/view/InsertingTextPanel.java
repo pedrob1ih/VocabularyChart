@@ -1,12 +1,17 @@
 package view;
 
 import Model.MakeVocabulary;
-import Model.Word;
+import Objects.Word;
+import Objects.WordsGroup;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +23,8 @@ public class InsertingTextPanel extends javax.swing.JPanel {
      */
     public InsertingTextPanel() {
         initComponents();
+        SimpleDateFormat sDateFormat= new SimpleDateFormat("dd/MM/yyyy");
+        jTFNameGroup.setText((sDateFormat.format(Calendar.getInstance().getTime()))+" - ");
     }
 
     /**
@@ -35,23 +42,23 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         JBCopy = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTAOutput = new javax.swing.JTextArea();
-        jBSelect = new javax.swing.JButton();
+        jTFNameGroup = new javax.swing.JTextField();
 
         setMinimumSize(new java.awt.Dimension(0, 0));
-        setPreferredSize(new java.awt.Dimension(0, 0));
+        setPreferredSize(new java.awt.Dimension(800, 494));
 
         jTAImput.setColumns(20);
         jTAImput.setRows(5);
         jSPImput.setViewportView(jTAImput);
 
-        jBCreate.setText("Create");
+        jBCreate.setText("Create List");
         jBCreate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBCreateActionPerformed(evt);
             }
         });
 
-        JBCopy.setText("Copy");
+        JBCopy.setText("Copy List");
         JBCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JBCopyActionPerformed(evt);
@@ -62,13 +69,6 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         jTAOutput.setRows(5);
         jScrollPane2.setViewportView(jTAOutput);
 
-        jBSelect.setText("Select");
-        jBSelect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSelectActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,28 +77,28 @@ public class InsertingTextPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
+                    .addComponent(jSPImput)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBCreate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(JBCopy)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBSelect)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jSPImput))
+                        .addComponent(jTFNameGroup)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jBCreate)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jBCreate)
-                    .addComponent(JBCopy)
-                    .addComponent(jBSelect))
+                .addContainerGap()
+                .addComponent(jSPImput, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSPImput, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(JBCopy)
+                        .addComponent(jBCreate))
+                    .addComponent(jTFNameGroup))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -110,45 +110,45 @@ public class InsertingTextPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_JBCopyActionPerformed
 
     private void jBCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCreateActionPerformed
-        ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
-        String listaPalabras="";
-        for (Object list1 : list) {
-            try {
-                Word w= new Word((String) list1);
-                listaPalabras+="\n"+w.getWord()+" = ";
-                if(!w.exist()){
-                    w.insert();
-                    System.out.println("palabra "+(String)list1+" insertada");
-                }
-                    
-            } catch (SQLException ex) {
-                Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        jTAOutput.setText(listaPalabras);
-    }//GEN-LAST:event_jBCreateActionPerformed
-
-    private void jBSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSelectActionPerformed
         try {
-            ArrayList<Word> l=Word.selectWhere(null);
-            String outPut="";
-            for (Word l1 : l) {
-                outPut+=l1.getWord()+" = "+l1.getMeaning()+"\n";
+            ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
+            String listaPalabras="";
+            Random r= new Random();
+            WordsGroup wG=null;
+            int idWordGroup=0;
+            while(wG==null || wG.exist()){
+                idWordGroup=r.nextInt(999999999);
+                wG= new WordsGroup(idWordGroup, jTFNameGroup.getText());
             }
-            jTAOutput.setText(outPut);
+            wG.insert();
+            
+            for (Object list1 : list) {
+                try {
+                    Word w= new Word(idWordGroup,(String) list1);
+                    listaPalabras+="\n"+w.getWord()+" = ";
+                    if(!w.exist()){
+                        w.insert();
+                        System.out.println("palabra "+(String)list1+" insertada");
+                    }
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            jTAOutput.setText(listaPalabras);
         } catch (SQLException ex) {
             Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jBSelectActionPerformed
+    }//GEN-LAST:event_jBCreateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JBCopy;
     private javax.swing.JButton jBCreate;
-    private javax.swing.JButton jBSelect;
     private javax.swing.JScrollPane jSPImput;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTAImput;
     private javax.swing.JTextArea jTAOutput;
+    private javax.swing.JTextField jTFNameGroup;
     // End of variables declaration//GEN-END:variables
 }

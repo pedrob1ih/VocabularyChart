@@ -49,7 +49,6 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(800, 494));
-        setPreferredSize(new java.awt.Dimension(0, 0));
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
