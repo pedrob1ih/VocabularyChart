@@ -5,6 +5,8 @@
  */
 package view;
 
+import java.awt.BorderLayout;
+
 /**
  *
  * @author root
@@ -16,14 +18,14 @@ public class GUI extends javax.swing.JFrame {
             
     public GUI() {
         initComponents();
+
+        chartPane= new ChartPane();
+        chartPane.setVisible(false);
         
         insertingText= new InsertingTextPanel();
         add(insertingText);
-        insertingText.setVisible(false);
+        insertingText.setVisible(true);
         
-        chartPane= new ChartPane();
-        add(chartPane);
-        chartPane.setVisible(false);
         
     }
 
@@ -46,8 +48,8 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 600));
-        getContentPane().setLayout(new java.awt.FlowLayout());
+        setMinimumSize(new java.awt.Dimension(800, 494));
+        setPreferredSize(new java.awt.Dimension(0, 0));
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -80,11 +82,13 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         chartPane.setVisible(true);
         insertingText.setVisible(false);
+        add(chartPane);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         chartPane.setVisible(false);
         insertingText.setVisible(true);
+        add(insertingText);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

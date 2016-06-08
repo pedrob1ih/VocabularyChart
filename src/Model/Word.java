@@ -13,6 +13,14 @@ public class Word {
     private Timestamp insertionDate;
     private boolean ignoredWord;
 
+    public Word(String word, String meaning, Timestamp insertionDate, boolean ignoredWord) {
+        this.word = word;
+        this.meaning = meaning;
+        this.insertionDate = insertionDate;
+        this.ignoredWord = ignoredWord;
+    }
+
+    
     public Word(String word,boolean ignoredWord) {
         this.word = word;
         this.meaning = "";
@@ -51,7 +59,7 @@ public class Word {
                 .executeUpdate("DELETE FROM words where word='"+this.word+"'");
     }
     public int update() throws SQLException{
-        String slq="UPDATE words SET word='"+this.word+"' , meaning='"+this.meaning+"', date=CURRENT_TIMESTAMP, ignoredWord="+this.ignoredWord+" where word='"+this.word+"'";
+        String slq="UPDATE words SET meaning='"+this.meaning+"', ignoredWord="+this.ignoredWord+" where word='"+this.word+"'";
 //        System.out.println(slq);
         return H2DB.getInstance().getSt().executeUpdate(slq);
     }
@@ -76,7 +84,7 @@ public class Word {
         }
         
         while (resultSet.next()) {
-            Word w= new Word(resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(4));
+            Word w= new Word(resultSet.getString(1),resultSet.getString(2),resultSet.getTimestamp(3),resultSet.getBoolean(4));
             l.add(w);
         }
         return l;

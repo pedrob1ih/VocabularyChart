@@ -4,6 +4,7 @@ import Model.Word;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JToolTip;
 import javax.swing.table.DefaultTableModel;
 
 public class ChartPane extends javax.swing.JPanel {
@@ -18,12 +19,23 @@ public class ChartPane extends javax.swing.JPanel {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
+    }
+
+    @Override
+    public JToolTip createToolTip() {
+        return super.createToolTip(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setVisible(boolean aFlag) {
         try {
             fillTable();
         } catch (SQLException ex) {
             Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
+        super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
     }
+    
     
     private void fillTable() throws SQLException{
         String select=null;
@@ -77,7 +89,7 @@ public class ChartPane extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jCBWordType = new javax.swing.JComboBox();
 
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(0, 0));
 
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -138,12 +150,17 @@ public class ChartPane extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 594, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,7 +169,8 @@ public class ChartPane extends javax.swing.JPanel {
                     .addComponent(jButton1)
                     .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -183,7 +201,7 @@ public class ChartPane extends javax.swing.JPanel {
                     for(int i = 0;i<datos.getRowCount();i++){
                         boolean ignored=(boolean)datos.getValueAt(i,0);
                         String meaning=(String)datos.getValueAt(i,2);
-                        if(!ignored){
+                        if(ignored || !meaning.equals("")){
                             w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
                             try {
                                 w.update();
@@ -196,8 +214,6 @@ public class ChartPane extends javax.swing.JPanel {
                 case 2:
                     // save every thing
                     for(int i = 0;i<datos.getRowCount();i++){
-                        boolean ignored=(boolean)datos.getValueAt(i,0);
-                        String meaning=(String)datos.getValueAt(i,2);
                         w= new Word((String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(boolean)datos.getValueAt(i, 0));
                         try {
                             w.update();

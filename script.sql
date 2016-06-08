@@ -4,7 +4,7 @@ drop table hit_miss;
 CREATE TABLE words  (
         word char(50) NOT NULL,
         meaning char(50) NOT NULL,
-	DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	DATE TIMESTAMP NOT NULL,
 	ignoredWord BOOLEAN NOT NULL,
         PRIMARY KEY (word)
 );
