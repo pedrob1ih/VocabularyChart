@@ -27,7 +27,7 @@ public class H2DB {
     private boolean abrirConexion(){
         try {
             Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+            Connection conn = DriverManager.getConnection("jdbc:h2:~\\dist\\lib\\h2-1.4.192.jar", "sa", "");
             this.st=conn.createStatement();
             return true;
         }

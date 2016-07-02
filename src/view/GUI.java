@@ -5,6 +5,7 @@
  */
 package view;
 
+import Model.H2DB;
 import java.awt.BorderLayout;
 
 /**
@@ -19,6 +20,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
 
+        H2DB.getInstance();
         chartPane= new ChartPane();
         chartPane.setVisible(false);
         

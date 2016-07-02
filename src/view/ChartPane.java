@@ -1,9 +1,12 @@
 package view;
 
+import Model.H2DB;
 import Objects.Word;
 import Objects.WordsGroup;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JToolTip;
@@ -21,7 +24,13 @@ public class ChartPane extends javax.swing.JPanel {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
+        try {
+            filljCBWGroup();
+        } catch (SQLException ex) {
+//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
 
     @Override
     public JToolTip createToolTip() {
@@ -30,15 +39,27 @@ public class ChartPane extends javax.swing.JPanel {
 
     @Override
     public void setVisible(boolean aFlag) {
-        try {
+        super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
+        if(aFlag){
+            try {
+            filljCBWGroup();
             fillTable();
         } catch (SQLException ex) {
-            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
-        super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
+        }
+        
     }
     
-    
+    private void filljCBWGroup() throws SQLException{
+//        jCBWGroup.removeAll();
+        ResultSet r=H2DB.getInstance().getSt().executeQuery("select name from wordsgroup group by name");
+        while(r.next()){
+            jCBWGroup.addItem(r.getString(1));
+        }
+            
+    }
+        
     private void fillTable() throws SQLException{
         String select=null;
 
@@ -57,14 +78,26 @@ public class ChartPane extends javax.swing.JPanel {
                 ;
                 break;
         }
+        
+        ArrayList<WordsGroup> l=WordsGroup.select("where name='"+jCBWGroup.getSelectedItem().toString()+"'");
+        int id=0;
+        for (WordsGroup wG : l) {
+            id=wG.getId();
+        }
+        
+        if(whatShow!=2)
+            select+=" and idWordGoup="+id+"";
+        //sacar el codigo del nombre seleccionado
+        //poner un and para sacar solo las palabras de ese codigo de nombre de grupo
 
         //delete all the rows
         while(datos.getRowCount()>0)
             datos.removeRow(datos.getRowCount()-1);
         
+        
         for (Word w : Word.selectWhere(select)) {
             if(w!=null){
-                String nameGroup=WordsGroup.select("where id='"+w.getIdWordGoup()+"'").get(0).getName();
+                String nameGroup=WordsGroup.select("where id='"+id+"'").get(0).getName();
                 Object object[]=new Object[]{nameGroup,w.getWord(),w.getMeaning(),w.getInsertionDate(),w.isIgnoredWord()};
                 datos.addRow(object);
             }
@@ -85,7 +118,7 @@ public class ChartPane extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         jBSave = new javax.swing.JButton();
         jCBWordType = new javax.swing.JComboBox();
-        jComboBox1 = new javax.swing.JComboBox();
+        jCBWGroup = new javax.swing.JComboBox();
 
         setPreferredSize(new java.awt.Dimension(800, 494));
 
@@ -144,21 +177,24 @@ public class ChartPane extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCBWGroup.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCBWGroupItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jCBWGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBSave)))
@@ -170,9 +206,9 @@ public class ChartPane extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jCBWordType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBSave)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCBWGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -224,14 +260,14 @@ public class ChartPane extends javax.swing.JPanel {
                         try {
                             w.update();
                         } catch (SQLException ex) {
-                            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+//                            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     break;
             }
             fillTable();
         } catch (SQLException ex) {
-            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBSaveActionPerformed
 
@@ -251,15 +287,23 @@ public class ChartPane extends javax.swing.JPanel {
         try {
             fillTable();
         } catch (SQLException ex) {
-            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jCBWordTypeItemStateChanged
+
+    private void jCBWGroupItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBWGroupItemStateChanged
+        try {
+            fillTable();
+        } catch (SQLException ex) {
+//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jCBWGroupItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBSave;
+    private javax.swing.JComboBox jCBWGroup;
     private javax.swing.JComboBox jCBWordType;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
