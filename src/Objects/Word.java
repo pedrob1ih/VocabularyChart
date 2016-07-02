@@ -109,18 +109,17 @@ public class Word {
         return resultSet.next();
     }
     
-    public static ArrayList<Word> selectWhere(String where) throws SQLException{
+    public static ArrayList<Word> selectWhere(String select) throws SQLException{
         ArrayList<Word> l= new ArrayList<>();
         ResultSet resultSet;
-        String select="select * from words ";
-        String select2=" order by word";
-        if(where==null){
+        if(select==null){
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(select+select2);
+                executeQuery("select * from words order by word");
         }
-        else{
+        else{            
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(select+where+select2);
+                executeQuery(select);
+                
         }
         
         while (resultSet.next()) {

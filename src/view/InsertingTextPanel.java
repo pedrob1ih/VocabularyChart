@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -140,6 +139,16 @@ public class InsertingTextPanel extends javax.swing.JPanel {
             Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBCreateActionPerformed
+
+    @Override
+    public void setVisible(boolean aFlag) {
+        super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
+        if(aFlag){
+            jTAImput.setText("");
+            jTAOutput.setText("");
+            jTFNameGroup.setText("");
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

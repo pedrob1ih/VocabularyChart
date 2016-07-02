@@ -57,18 +57,17 @@ public class WordsGroup {
         String sql="select * FROM wordsGroup where id="+this.id;
         return H2DB.getInstance().getSt().executeQuery(sql).next();
     }
-    public static ArrayList<WordsGroup> select(String where) throws SQLException{
+    public static ArrayList<WordsGroup> select(String select) throws SQLException{
         ArrayList<WordsGroup> l= new ArrayList<>();
         ResultSet resultSet;
-        String select="select * from wordsGroup ";
-        String select2=" order by id";
-        if(where==null){
+        if(select==null){
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(select+select2);
+                executeQuery("select * from wordsGroup order by id");
         }
         else{
+//            System.out.println(select);
             resultSet=H2DB.getInstance().getSt().
-                executeQuery(select+where+select2);
+                executeQuery(select);
         }
         
         while (resultSet.next()) {
@@ -77,4 +76,13 @@ public class WordsGroup {
         }
         return l;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    
+    
+    
 }

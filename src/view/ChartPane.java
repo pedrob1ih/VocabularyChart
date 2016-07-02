@@ -24,11 +24,6 @@ public class ChartPane extends javax.swing.JPanel {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
-        try {
-            filljCBWGroup();
-        } catch (SQLException ex) {
-//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 
@@ -42,34 +37,47 @@ public class ChartPane extends javax.swing.JPanel {
         super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
         if(aFlag){
             try {
-            filljCBWGroup();
-            fillTable();
-        } catch (SQLException ex) {
-            //Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                filljCBWGroup();
+                fillTable();
+            } catch (SQLException ex) {
+                System.out.println("mensajeeeeeeeeeeeeeee "+ex.getMessage());
+                //Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
     
     private void filljCBWGroup() throws SQLException{
-//        jCBWGroup.removeAll();
-        ResultSet r=H2DB.getInstance().getSt().executeQuery("select name from wordsgroup group by name");
-        while(r.next()){
-            jCBWGroup.addItem(r.getString(1));
+        try{
+            for (int i = 0; i < jCBWGroup.getSize().height; i++) {
+                jCBWGroup.removeItemAt(i);
+            }
         }
-            
-    }
+        catch(Exception e){;}
         
-    private void fillTable() throws SQLException{
-        String select=null;
+        
+        for (WordsGroup wG : WordsGroup.select("select * from wordsGroup order by name")) {
+            jCBWGroup.addItem(wG);
+        }            
+    }
 
+    private void fillTable() throws SQLException{
+        //mirar lo del combo de irnored
+        //mirar la tabla de vocabulario seleccionada
+        
+        String nGroup=jCBWGroup.getSelectedItem().toString();
+        int idWordGroup=0;
+        for (WordsGroup w : WordsGroup.select("select * from wordsGroup where name='"+nGroup+"'")) {
+            idWordGroup=w.getId();
+        }
+        String select=null;
         switch(jCBWordType.getSelectedIndex()){
             case 0:
-                select="where ignoredWord=false";
+                select="select * from words where ignoredWord=false and IDWORDGOUP="+idWordGroup+" order by word";
                 whatShow=0;
                 break;
             case 1:
-                select="where ignoredWord=true";
+                select="select * from words where ignoredWord=true and IDWORDGOUP="+idWordGroup+" order by word";
                 whatShow=1;
                 break;
             case 2:
@@ -79,30 +87,19 @@ public class ChartPane extends javax.swing.JPanel {
                 break;
         }
         
-        ArrayList<WordsGroup> l=WordsGroup.select("where name='"+jCBWGroup.getSelectedItem().toString()+"'");
-        int id=0;
-        for (WordsGroup wG : l) {
-            id=wG.getId();
-        }
-        
-        if(whatShow!=2)
-            select+=" and idWordGoup="+id+"";
-        //sacar el codigo del nombre seleccionado
-        //poner un and para sacar solo las palabras de ese codigo de nombre de grupo
-
-        //delete all the rows
+        //wipe the table
         while(datos.getRowCount()>0)
             datos.removeRow(datos.getRowCount()-1);
         
-        
+        String nameGroup=WordsGroup.select("select * from wordsGroup where id='"+idWordGroup+"' order by id").get(0).getName();
         for (Word w : Word.selectWhere(select)) {
             if(w!=null){
-                String nameGroup=WordsGroup.select("where id='"+id+"'").get(0).getName();
+                
                 Object object[]=new Object[]{nameGroup,w.getWord(),w.getMeaning(),w.getInsertionDate(),w.isIgnoredWord()};
                 datos.addRow(object);
             }
         }
-        
+//        filljCBWGroup();
     }
 
     /**
@@ -226,7 +223,7 @@ public class ChartPane extends javax.swing.JPanel {
                         boolean ignored=(boolean)datos.getValueAt(i,4);
                         String meaning=(String)datos.getValueAt(i,2);
                         if(ignored || !meaning.equals("")){
-                            int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                            int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
                             w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                             try {
                                 w.update();
@@ -242,7 +239,7 @@ public class ChartPane extends javax.swing.JPanel {
                         boolean ignored=(boolean)datos.getValueAt(i,4);
                         String meaning=(String)datos.getValueAt(i,2);
                         if(ignored || !meaning.equals("")){
-                            int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                            int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
                             w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                             try {
                                 w.update();
@@ -255,7 +252,7 @@ public class ChartPane extends javax.swing.JPanel {
                 case 2:
                     // save every thing
                     for(int i = 0;i<datos.getRowCount();i++){
-                        int idGroup=WordsGroup.select("where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
+                        int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
                         w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
                         try {
                             w.update();
@@ -287,16 +284,17 @@ public class ChartPane extends javax.swing.JPanel {
         try {
             fillTable();
         } catch (SQLException ex) {
-//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_jCBWordTypeItemStateChanged
 
     private void jCBWGroupItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBWGroupItemStateChanged
         try {
             fillTable();
-        } catch (SQLException ex) {
-//            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
+        catch (SQLException ex) {
+            //ex.printStackTrace();
+        }       
     }//GEN-LAST:event_jCBWGroupItemStateChanged
 
 

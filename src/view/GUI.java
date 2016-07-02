@@ -90,12 +90,18 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        jMenu1.setEnabled(true);
+        jMenu2.setEnabled(false);
+        
         chartPane.setVisible(true);
         insertingText.setVisible(false);
         add(chartPane);
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        jMenu1.setEnabled(false);
+        jMenu2.setEnabled(true);
+        
         chartPane.setVisible(false);
         insertingText.setVisible(true);
         add(insertingText);
