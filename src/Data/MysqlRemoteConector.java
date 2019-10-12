@@ -1,4 +1,4 @@
-package Model;
+package Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,35 +7,35 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class H2DB {
+public class MysqlRemoteConector {
     
-    private static H2DB instance=null;
+    private static MysqlRemoteConector instance=null;
     private Statement st;
     private Connection conn;
     
-    private H2DB(){
+    private MysqlRemoteConector(){
         if(conn==null)
             abrirConexion();
     }
-    public static H2DB getInstance(){
+    public static MysqlRemoteConector getInstance(){
         if(instance==null)
-            instance = new H2DB();
+            instance = new MysqlRemoteConector();
             
         return instance;
     }
     
     private boolean abrirConexion(){
         try {
-            Class.forName("org.h2.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:h2:C:\\lib\\h2-1.4.192.jar", "sa", "");
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://185.224.137.11:3306/u935890934_VocChart","def","defdef");
             this.st=conn.createStatement();
             return true;
         }
         catch (ClassNotFoundException ex) {
-            Logger.getLogger(H2DB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MysqlRemoteConector.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (SQLException ex) {
-            Logger.getLogger(H2DB.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MysqlRemoteConector.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

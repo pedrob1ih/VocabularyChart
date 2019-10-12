@@ -1,6 +1,6 @@
 package view;
 
-import Model.MakeVocabulary;
+import busines.MakeVocabulary;
 import Objects.Word;
 import Objects.WordsGroup;
 import java.awt.Toolkit;
@@ -67,6 +67,12 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         jTAOutput.setColumns(20);
         jTAOutput.setRows(5);
         jScrollPane2.setViewportView(jTAOutput);
+
+        jTFNameGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTFNameGroupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -140,13 +146,17 @@ public class InsertingTextPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jBCreateActionPerformed
 
+    private void jTFNameGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNameGroupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTFNameGroupActionPerformed
+
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
         if(aFlag){
             jTAImput.setText("");
             jTAOutput.setText("");
-            jTFNameGroup.setText("");
+            jTFNameGroup.setText("Default list");
         }
     }
 

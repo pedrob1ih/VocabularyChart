@@ -1,0 +1,6 @@
+queremos que:
+
+    -un usuario se loggee
+    -un usuario pueda crear una lista de palabras
+    -un usuario pueda agregar palabras a una lista de palabras
+    -un usuario puede marcar como ignorada una palabra de una lista de palabras

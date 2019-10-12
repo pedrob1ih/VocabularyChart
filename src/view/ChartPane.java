@@ -1,12 +1,9 @@
 package view;
 
-import Model.H2DB;
 import Objects.Word;
 import Objects.WordsGroup;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JToolTip;
@@ -40,7 +37,7 @@ public class ChartPane extends javax.swing.JPanel {
                 filljCBWGroup();
                 fillTable();
             } catch (SQLException ex) {
-                System.out.println("mensajeeeeeeeeeeeeeee "+ex.getMessage());
+                ex.printStackTrace();
                 //Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -158,21 +155,6 @@ public class ChartPane extends javax.swing.JPanel {
                 jCBWordTypeItemStateChanged(evt);
             }
         });
-        jCBWordType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCBWordTypeActionPerformed(evt);
-            }
-        });
-        jCBWordType.addHierarchyListener(new java.awt.event.HierarchyListener() {
-            public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
-                jCBWordTypeHierarchyChanged(evt);
-            }
-        });
-        jCBWordType.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jCBWordTypePropertyChange(evt);
-            }
-        });
 
         jCBWGroup.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -267,18 +249,6 @@ public class ChartPane extends javax.swing.JPanel {
 //            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBSaveActionPerformed
-
-    private void jCBWordTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCBWordTypeActionPerformed
-        ;
-    }//GEN-LAST:event_jCBWordTypeActionPerformed
-
-    private void jCBWordTypePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCBWordTypePropertyChange
-        ;
-    }//GEN-LAST:event_jCBWordTypePropertyChange
-
-    private void jCBWordTypeHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jCBWordTypeHierarchyChanged
-
-    }//GEN-LAST:event_jCBWordTypeHierarchyChanged
 
     private void jCBWordTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBWordTypeItemStateChanged
         try {
