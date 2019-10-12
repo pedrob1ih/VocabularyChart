@@ -5,7 +5,7 @@
  */
 package view;
 
-import Data.SqliteConector;
+import Data.MysqlRemoteConector;
 import java.awt.BorderLayout;
 
 /**
@@ -20,7 +20,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
 
-        SqliteConector.getInstance();
+        MysqlRemoteConector.getInstance();
         chartPane= new ChartPane();
         chartPane.setVisible(false);
         

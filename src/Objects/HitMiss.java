@@ -1,6 +1,6 @@
 package Objects;
 
-import Data.SqliteConector;
+import Data.MysqlRemoteConector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -22,15 +22,15 @@ public class HitMiss {
     }
         
     public int insert() throws SQLException{
-        return SqliteConector.getInstance().getSt()
+        return MysqlRemoteConector.getInstance().getSt()
                 .executeUpdate("insert into hit_miss values ('"+this.word+"',"+this.hit+",CURRENT_TIMESTAMP)");
     }
     public int delete() throws SQLException{
-        return SqliteConector.getInstance().getSt()
+        return MysqlRemoteConector.getInstance().getSt()
                 .executeUpdate("DELETE FROM hit_miss where word='"+this.word+"'");
     }
     public boolean exist() throws SQLException{
-        ResultSet resultSet=SqliteConector.getInstance().getSt().
+        ResultSet resultSet=MysqlRemoteConector.getInstance().getSt().
                 executeQuery("select * from hit_miss where word='"+this.word+"'");
         return resultSet.next();
     }
@@ -39,11 +39,11 @@ public class HitMiss {
         ArrayList<HitMiss> l= new ArrayList<>();
         ResultSet resultSet;
         if(select==null){
-            resultSet=SqliteConector.getInstance().getSt().
+            resultSet=MysqlRemoteConector.getInstance().getSt().
                 executeQuery("select * from hit_miss");
         }
         else
-            resultSet=SqliteConector.getInstance().getSt().
+            resultSet=MysqlRemoteConector.getInstance().getSt().
                 executeQuery(select);
         
         while (resultSet.next()) {

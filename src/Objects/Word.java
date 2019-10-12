@@ -1,6 +1,6 @@
 package Objects;
 
-import Data.SqliteConector;
+import Data.MysqlRemoteConector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -92,23 +92,23 @@ public class Word {
     }
 
     public int insert() throws SQLException {
-        return SqliteConector.getInstance().getSt()
+        return MysqlRemoteConector.getInstance().getSt()
                 .executeUpdate("INSERT INTO words values(" + this.idWordGoup + ",'" + this.word + "','" + this.meaning + "',CURRENT_TIMESTAMP," + this.ignoredWord + ")");
     }
 
     public int delete() throws SQLException {
-        return SqliteConector.getInstance().getSt()
+        return MysqlRemoteConector.getInstance().getSt()
                 .executeUpdate("DELETE FROM words where word='" + this.word + "'");
     }
 
     public int update() throws SQLException {
         String slq = "UPDATE words SET meaning='" + this.meaning + "', ignoredWord=" + this.ignoredWord + " where word='" + this.word + "'";
 //        System.out.println(slq);
-        return SqliteConector.getInstance().getSt().executeUpdate(slq);
+        return MysqlRemoteConector.getInstance().getSt().executeUpdate(slq);
     }
 
     public boolean exist() throws SQLException {
-        ResultSet resultSet = SqliteConector.getInstance().getSt().
+        ResultSet resultSet = MysqlRemoteConector.getInstance().getSt().
                 executeQuery("select * from words where word='" + this.word + "'");
         return resultSet.next();
     }
@@ -117,10 +117,10 @@ public class Word {
         ArrayList<Word> l = new ArrayList<>();
         ResultSet resultSet;
         if (select == null) {
-            resultSet = SqliteConector.getInstance().getSt().
+            resultSet = MysqlRemoteConector.getInstance().getSt().
                     executeQuery("select * from words order by word");
         } else {
-            resultSet = SqliteConector.getInstance().getSt().
+            resultSet = MysqlRemoteConector.getInstance().getSt().
                     executeQuery(select);
 
         }

@@ -1,6 +1,6 @@
 package Objects;
 
-import Data.SqliteConector;
+import Data.MysqlRemoteConector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -42,33 +42,33 @@ public class WordsGroup {
         } else {
             sql = "insert into wordsGroup values(" + this.id + ",'" + this.name + "'," + this.date + ")";
         }
-        return SqliteConector.getInstance().getSt().executeUpdate(sql);
+        return MysqlRemoteConector.getInstance().getSt().executeUpdate(sql);
     }
 
     public int update() throws SQLException {
         String sql = "UPDATE wordsGroup SET name='" + this.name + "'where id=" + this.id;
-        return SqliteConector.getInstance().getSt().executeUpdate(sql);
+        return MysqlRemoteConector.getInstance().getSt().executeUpdate(sql);
     }
 
     public int delete() throws SQLException {
         String sql = "DELETE FROM wordsGroup where id=" + this.id;
-        return SqliteConector.getInstance().getSt().executeUpdate(sql);
+        return MysqlRemoteConector.getInstance().getSt().executeUpdate(sql);
     }
 
     public boolean exist() throws SQLException {
         String sql = "select * FROM wordsGroup where id=" + this.id;
-        return SqliteConector.getInstance().getSt().executeQuery(sql).next();
+        return MysqlRemoteConector.getInstance().getSt().executeQuery(sql).next();
     }
 
     public static ArrayList<WordsGroup> select(String select) throws SQLException {
         ArrayList<WordsGroup> l = new ArrayList<>();
         ResultSet resultSet;
         if (select == null) {
-            resultSet = SqliteConector.getInstance().getSt().
+            resultSet = MysqlRemoteConector.getInstance().getSt().
                     executeQuery("select * from wordsGroup order by id");
         } else {
 //            System.out.println(select);
-            resultSet = SqliteConector.getInstance().getSt().
+            resultSet = MysqlRemoteConector.getInstance().getSt().
                     executeQuery(select);
         }
 

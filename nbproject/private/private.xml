@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJGUI/src/view/GUI.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJGUI/src/view/ChartPane.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJGUI/src/view/main.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/ChartPane.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/GUI.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/InsertingTextPanel.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/objects/WordsGroup.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/objects/Word.java</file>
         </group>
     </open-files>
 </project-private>
