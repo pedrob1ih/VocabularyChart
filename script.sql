@@ -1,5 +1,5 @@
-drop table wordsGroup;
 drop table words;
+drop table wordsGroup;
 drop table hit_miss;
 
 CREATE TABLE wordsGroup  (
@@ -26,4 +26,3 @@ CREATE TABLE hit_miss (
         PRIMARY KEY (word),
         FOREIGN KEY(word) REFERENCES words(word)
 );
-

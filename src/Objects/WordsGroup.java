@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class WordsGroup {
+
     private int id;
     private String name;
     private Timestamp date;
@@ -22,9 +23,6 @@ public class WordsGroup {
         this.name = name;
     }
 
-    
-    
-
     public int getId() {
         return id;
     }
@@ -36,42 +34,47 @@ public class WordsGroup {
     public Timestamp getDate() {
         return date;
     }
-    
-    public int insert() throws SQLException{
-        String sql="";
-        if(this.date==null)
-            sql="insert into wordsGroup values("+this.id+",'"+this.name+"',CURRENT_TIMESTAMP)";
-        else
-            sql="insert into wordsGroup values("+this.id+",'"+this.name+"',"+this.date+")";
+
+    public int insert() throws SQLException {
+        String sql = "";
+        if (this.date == null) {
+            sql = "insert into wordsGroup values(" + this.id + ",'" + this.name + "',CURRENT_TIMESTAMP)";
+        } else {
+            sql = "insert into wordsGroup values(" + this.id + ",'" + this.name + "'," + this.date + ")";
+        }
         return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
-    public int update() throws SQLException{
-        String sql="UPDATE wordsGroup SET name='"+this.name+"'where id="+this.id;
+
+    public int update() throws SQLException {
+        String sql = "UPDATE wordsGroup SET name='" + this.name + "'where id=" + this.id;
         return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
-    public int delete() throws SQLException{
-        String sql="DELETE FROM wordsGroup where id="+this.id;
+
+    public int delete() throws SQLException {
+        String sql = "DELETE FROM wordsGroup where id=" + this.id;
         return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
-    public boolean exist() throws SQLException{
-        String sql="select * FROM wordsGroup where id="+this.id;
+
+    public boolean exist() throws SQLException {
+        String sql = "select * FROM wordsGroup where id=" + this.id;
         return SqliteConector.getInstance().getSt().executeQuery(sql).next();
     }
-    public static ArrayList<WordsGroup> select(String select) throws SQLException{
-        ArrayList<WordsGroup> l= new ArrayList<>();
+
+    public static ArrayList<WordsGroup> select(String select) throws SQLException {
+        ArrayList<WordsGroup> l = new ArrayList<>();
         ResultSet resultSet;
-        if(select==null){
-            resultSet=SqliteConector.getInstance().getSt().
-                executeQuery("select * from wordsGroup order by id");
-        }
-        else{
+        if (select == null) {
+            resultSet = SqliteConector.getInstance().getSt().
+                    executeQuery("select * from wordsGroup order by id");
+        } else {
 //            System.out.println(select);
-            resultSet=SqliteConector.getInstance().getSt().
-                executeQuery(select);
+            resultSet = SqliteConector.getInstance().getSt().
+                    executeQuery(select);
         }
-        
+
         while (resultSet.next()) {
-            WordsGroup wG= new WordsGroup(resultSet.getInt(1),resultSet.getString(2),resultSet.getTimestamp(3));
+            WordsGroup wG = new WordsGroup(resultSet.getInt("id"), resultSet.getString("name"));
+//            WordsGroup wG = new WordsGroup(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("DATE"));
             l.add(wG);
         }
         return l;
@@ -82,7 +85,4 @@ public class WordsGroup {
         return name;
     }
 
-    
-    
-    
 }

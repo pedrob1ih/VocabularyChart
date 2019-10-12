@@ -1,4 +1,4 @@
-package Model;
+package busines;
 
 import java.io.FileWriter;
 import java.io.IOException;
