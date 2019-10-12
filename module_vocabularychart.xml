@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_vocabularychart" default="compile.module.vocabularychart">
+  <dirname property="module.vocabularychart.basedir" file="${ant.file.module_vocabularychart}"/>
+  
+  <property name="module.jdk.home.vocabularychart" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.vocabularychart" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.vocabularychart" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.vocabularychart" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="vocabularychart.output.dir" value="${module.vocabularychart.basedir}/out/production/VocabularyChart"/>
+  <property name="vocabularychart.testoutput.dir" value="${module.vocabularychart.basedir}/out/test/VocabularyChart"/>
+  
+  <path id="vocabularychart.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="vocabularychart.module.production.classpath">
+    <path refid="${module.jdk.classpath.vocabularychart}"/>
+    <pathelement location="${basedir}/lib/h2-1.4.192.jar"/>
+  </path>
+  
+  <path id="vocabularychart.runtime.production.module.classpath">
+    <pathelement location="${vocabularychart.output.dir}"/>
+    <pathelement location="${basedir}/lib/h2-1.4.192.jar"/>
+  </path>
+  
+  <path id="vocabularychart.module.classpath">
+    <path refid="${module.jdk.classpath.vocabularychart}"/>
+    <pathelement location="${vocabularychart.output.dir}"/>
+    <pathelement location="${basedir}/lib/h2-1.4.192.jar"/>
+  </path>
+  
+  <path id="vocabularychart.runtime.module.classpath">
+    <pathelement location="${vocabularychart.testoutput.dir}"/>
+    <pathelement location="${vocabularychart.output.dir}"/>
+    <pathelement location="${basedir}/lib/h2-1.4.192.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.vocabularychart">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.vocabularychart">
+    <patternset refid="excluded.from.module.vocabularychart"/>
+  </patternset>
+  
+  <path id="vocabularychart.module.sourcepath">
+    <dirset dir="${module.vocabularychart.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.vocabularychart" depends="compile.module.vocabularychart.production,compile.module.vocabularychart.tests" description="Compile module VocabularyChart"/>
+  
+  <target name="compile.module.vocabularychart.production" depends="register.custom.compilers" description="Compile module VocabularyChart; production classes">
+    <mkdir dir="${vocabularychart.output.dir}"/>
+    <javac2 destdir="${vocabularychart.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.vocabularychart}/javac">
+      <compilerarg line="${compiler.args.vocabularychart}"/>
+      <bootclasspath refid="vocabularychart.module.bootclasspath"/>
+      <classpath refid="vocabularychart.module.production.classpath"/>
+      <src refid="vocabularychart.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.vocabularychart"/>
+    </javac2>
+    
+    <copy todir="${vocabularychart.output.dir}">
+      <fileset dir="${module.vocabularychart.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.vocabularychart.tests" depends="register.custom.compilers,compile.module.vocabularychart.production" description="compile module VocabularyChart; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.vocabularychart" description="cleanup module">
+    <delete dir="${vocabularychart.output.dir}"/>
+    <delete dir="${vocabularychart.testoutput.dir}"/>
+  </target>
+</project>

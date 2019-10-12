@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VocabularyChart:jar">
+    <output-path>$USER_HOME$/Desktop/borrar</output-path>
+    <root id="archive" name="VocabularyChart.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$USER_HOME$/Desktop/borrar/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="VocabularyChart" />
+      <element id="extracted-dir" path="C:/lib/h2-1.4.192.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
