@@ -1,6 +1,6 @@
 package Objects;
 
-import Model.H2DB;
+import Data.SqliteConector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -43,30 +43,30 @@ public class WordsGroup {
             sql="insert into wordsGroup values("+this.id+",'"+this.name+"',CURRENT_TIMESTAMP)";
         else
             sql="insert into wordsGroup values("+this.id+",'"+this.name+"',"+this.date+")";
-        return H2DB.getInstance().getSt().executeUpdate(sql);
+        return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
     public int update() throws SQLException{
         String sql="UPDATE wordsGroup SET name='"+this.name+"'where id="+this.id;
-        return H2DB.getInstance().getSt().executeUpdate(sql);
+        return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
     public int delete() throws SQLException{
         String sql="DELETE FROM wordsGroup where id="+this.id;
-        return H2DB.getInstance().getSt().executeUpdate(sql);
+        return SqliteConector.getInstance().getSt().executeUpdate(sql);
     }
     public boolean exist() throws SQLException{
         String sql="select * FROM wordsGroup where id="+this.id;
-        return H2DB.getInstance().getSt().executeQuery(sql).next();
+        return SqliteConector.getInstance().getSt().executeQuery(sql).next();
     }
     public static ArrayList<WordsGroup> select(String select) throws SQLException{
         ArrayList<WordsGroup> l= new ArrayList<>();
         ResultSet resultSet;
         if(select==null){
-            resultSet=H2DB.getInstance().getSt().
+            resultSet=SqliteConector.getInstance().getSt().
                 executeQuery("select * from wordsGroup order by id");
         }
         else{
 //            System.out.println(select);
-            resultSet=H2DB.getInstance().getSt().
+            resultSet=SqliteConector.getInstance().getSt().
                 executeQuery(select);
         }
         

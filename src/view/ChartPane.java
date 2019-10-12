@@ -1,6 +1,6 @@
 package view;
 
-import Model.H2DB;
+import Data.SqliteConector;
 import Objects.Word;
 import Objects.WordsGroup;
 import java.sql.ResultSet;

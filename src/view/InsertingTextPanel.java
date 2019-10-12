@@ -1,6 +1,6 @@
 package view;
 
-import Model.MakeVocabulary;
+import busines.MakeVocabulary;
 import Objects.Word;
 import Objects.WordsGroup;
 import java.awt.Toolkit;
