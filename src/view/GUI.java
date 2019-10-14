@@ -5,7 +5,7 @@
  */
 package view;
 
-import Data.MysqlRemoteConector;
+import Data.Conector.MysqlRemoteConector;
 import java.awt.BorderLayout;
 
 /**

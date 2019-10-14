@@ -56,8 +56,6 @@ CREATE TABLE ignored_word_in_a_list (
     FOREIGN KEY(word) REFERENCES words(word)
 );
 
-
-
 INSERT INTO user_account 
     (name, pass, date_insert) values
     ("pedro","caracola",now());
@@ -65,3 +63,24 @@ INSERT INTO user_account
 INSERT INTO user_account 
     (name, pass, date_insert) values
     ("paco","zorro",now());
+    
+INSERT INTO words 
+    (word, meaning, date_insert) values
+    ("epojé","epoca",now());
+INSERT INTO words 
+    (word, meaning, date_insert) values
+    ("agora","plaza",now());
+    
+INSERT INTO wordsGroup 
+    (name, date_insert) values
+    ("Palabras que no me se pero acabaré sabiendo",now());    
+    
+INSERT INTO ignored_word_in_a_list 
+    (id_user, id_words_group, word, date_insert) VALUES 
+    (1, 1, "epojé", now());
+    
+DELETE FROM ignored_word_in_a_list WHERE id_user=1 and id_words_group=1 and word="epojé";
+
+mysql –u root –p
+
+GRANT ALL ON GRv0uSguq8.* TO GRv0uSguq8@`remotemysql.com` IDENTIFIED BY `BL0y8JnMPB`;

@@ -115,35 +115,35 @@ public class InsertingTextPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_JBCopyActionPerformed
 
     private void jBCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCreateActionPerformed
-        try {
-            ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
-            String listaPalabras="";
-            Random r= new Random();
-            WordsGroup wG=null;
-            int idWordGroup=0;
-            while(wG==null || wG.exist()){
-                idWordGroup=r.nextInt(999999999);
-                wG= new WordsGroup(idWordGroup, jTFNameGroup.getText());
-            }
-            wG.insert();
-            
-            for (Object list1 : list) {
-                try {
-                    Word w= new Word(idWordGroup,(String) list1);
-                    listaPalabras+="\n"+w.getWord()+" = ";
-                    if(!w.exist()){
-                        w.insert();
-                        System.out.println("palabra "+(String)list1+" insertada");
-                    }
-                    
-                } catch (SQLException ex) {
-                    Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            jTAOutput.setText(listaPalabras);
-        } catch (SQLException ex) {
-            Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
+//            String listaPalabras="";
+//            Random r= new Random();
+//            WordsGroup wG=null;
+//            int idWordGroup=0;
+//            while(wG==null || wG.exist()){
+//                idWordGroup=r.nextInt(999999999);
+//                wG= new WordsGroup(idWordGroup, jTFNameGroup.getText());
+//            }
+//            wG.insert();
+//            
+//            for (Object list1 : list) {
+//                try {
+//                    Word w= new Word(idWordGroup,(String) list1);
+//                    listaPalabras+="\n"+w.getWord()+" = ";
+//                    if(!w.exist()){
+//                        w.insert();
+//                        System.out.println("palabra "+(String)list1+" insertada");
+//                    }
+//                    
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//            jTAOutput.setText(listaPalabras);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jBCreateActionPerformed
 
     private void jTFNameGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNameGroupActionPerformed
