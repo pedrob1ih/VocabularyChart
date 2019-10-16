@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/ChartPane.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/GUI.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/view/InsertingTextPanel.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/objects/WordsGroup.java</file>
-            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/objects/Word.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/Data/Conector/MysqlRemoteConector.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/Data/IgnoredWordInAListLoader.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/Data/WordLoader.java</file>
+            <file>file:/D:/mega/GitHubProyects/GitHubProyects/VocabularyChartJSwing/src/report/report1.jrxml</file>
         </group>
     </open-files>
 </project-private>
