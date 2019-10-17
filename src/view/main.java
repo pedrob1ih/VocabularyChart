@@ -1,6 +1,8 @@
 package view;
 
+import Data.Conector.MysqlRemoteConector;
 import Data.IgnoredWordInAListLoader;
+import com.mysql.jdbc.MySQLConnection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
@@ -9,7 +11,12 @@ import objects.IgnoredWordInAList;
 
 public class main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        
+        insertarIgnoredWordInAList();
+    }
+    
+    private static void insertarIgnoredWordInAList(){
         try {
             IgnoredWordInAList ignoredWordInAList = new IgnoredWordInAList();
             ignoredWordInAList.setIdUser(1);

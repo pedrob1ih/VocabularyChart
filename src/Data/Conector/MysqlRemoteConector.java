@@ -26,7 +26,7 @@ public class MysqlRemoteConector {
     private boolean openConection(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306?useSSL=false","GRv0uSguq8","BL0y8JnMPB");
+            conn = DriverManager.getConnection("jdbc:mysql://37.59.55.185:3306/GRv0uSguq8?useSSL=false","GRv0uSguq8","BL0y8JnMPB");
             return true;
         }
         catch (ClassNotFoundException ex) {
