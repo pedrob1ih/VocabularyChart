@@ -13,34 +13,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import objects.RelWordsGroupWord;
+import objects.RelUserWordsGroup;
+import objects.RelUserWordsGroup;
 
 /**
  *
  * @author pedro
  */
 public class RelUserWordsGroupLoader {
-
+    
     private static RelUserWordsGroupLoader instance = null;
-
+    
     private MysqlRemoteConector mysqlRemoteConector;
     private PreparedStatement pStCreate;
-    private final String create = "INSERT INTO rel_wordsgroup_word (id_words_group, word) VALUES (?, ?)";
+    private final String create = "INSERT INTO rel_user_wordsgroup (id_user, id_words_group,date_insert) VALUES (?, ?, ?)";
     private PreparedStatement pStReadAll;
-    private final String readAll = "Select id_words_group, word from rel_wordsgroup_word";
+    private final String readAll = "Select id_user, id_words_group, date_insert from rel_user_wordsgroup";
     private PreparedStatement pStReadIndividual;
-    private final String readIndividual = "Select id_words_group, word from rel_wordsgroup_word "
-            + "where id_words_group=?, word=?";
+    private final String readIndividual = "Select id_user, id_words_group, date_insert from rel_user_wordsgroup"
+            + "where id_user=?, id_words_group=?";
     private PreparedStatement pStDelete;
-    private final String delete = "DELETE FROM rel_wordsgroup_word WHERE id_words_group=?, word=?";
-
+    private final String delete = "DELETE FROM rel_user_wordsgroup WHERE id_user=?, id_words_group=?";
+    
     public static RelUserWordsGroupLoader getInstance() throws SQLException {
         if (instance == null) {
             instance = new RelUserWordsGroupLoader();
         }
         return instance;
     }
-
+    
     private RelUserWordsGroupLoader() {
         if (pStCreate == null) {
             try {
@@ -50,7 +51,7 @@ public class RelUserWordsGroupLoader {
             }
         }
     }
-
+    
     private void createInstance() throws SQLException {
         if (this.mysqlRemoteConector == null) {
             this.mysqlRemoteConector = MysqlRemoteConector.getInstance();
@@ -64,42 +65,47 @@ public class RelUserWordsGroupLoader {
     }
 
 //Create
-    public boolean create(RelWordsGroupWord relWordsGroupWord) throws SQLException {
-        pStCreate.setInt(1, relWordsGroupWord.getIdWordsGroup());
-        pStCreate.setString(2, relWordsGroupWord.getWord());
+    public boolean create(RelUserWordsGroup relUserWordsGroup) throws SQLException {
+        pStCreate.setInt(1, relUserWordsGroup.getIdUser());
+        pStCreate.setInt(2, relUserWordsGroup.getIdWordsGroup());
+        pStCreate.setTimestamp(3, relUserWordsGroup.getDateIsert());
         return pStCreate.execute();
     }
 //Read
 
-    public ArrayList<RelWordsGroupWord> readAll() throws SQLException {
+    public ArrayList<RelUserWordsGroup> readAll() throws SQLException {
         ResultSet resultSet = pStReadAll.executeQuery();
-        ArrayList<RelWordsGroupWord> lRelWordsGroupWord = new ArrayList<>();
+        ArrayList<RelUserWordsGroup> lRelUserWordsGroup = new ArrayList<>();
         while (resultSet.next()) {
-            RelWordsGroupWord relWordsGroupWord = new RelWordsGroupWord();
-            relWordsGroupWord.setIdWordsGroup(resultSet.getInt("id_words_group"));
-            relWordsGroupWord.setWord(resultSet.getString("word"));
-            lRelWordsGroupWord.add(relWordsGroupWord);
+            RelUserWordsGroup relUserWordsGroup = new RelUserWordsGroup();
+            relUserWordsGroup.setIdWordsGroup(resultSet.getInt("id_user"));
+            relUserWordsGroup.setIdWordsGroup(resultSet.getInt("id_words_group"));
+            relUserWordsGroup.setDateIsert(resultSet.getTimestamp("date_insert"));
+            lRelUserWordsGroup.add(relUserWordsGroup);
         }
-        return lRelWordsGroupWord;
+        return lRelUserWordsGroup;
     }
-
-    public void read(RelWordsGroupWord relWordsGroupWord) throws SQLException {
+    
+    public void read(RelUserWordsGroup relUserWordsGroup) throws SQLException {
         //comprobar si se le pueden poner nulos
-        pStReadIndividual.setInt(1, relWordsGroupWord.getIdWordsGroup());
-        pStReadIndividual.setString(3, relWordsGroupWord.getWord());
+        pStReadIndividual.setInt(1, relUserWordsGroup.getIdUser());
+        pStReadIndividual.setInt(2, relUserWordsGroup.getIdWordsGroup());
+        pStReadIndividual.setTimestamp(3, relUserWordsGroup.getDateIsert());
         ResultSet resultSet = pStReadIndividual.executeQuery();
         while (resultSet.next()) {
-            relWordsGroupWord.setIdWordsGroup(resultSet.getInt("id_words_group"));
-            relWordsGroupWord.setWord(resultSet.getString("word"));
+            relUserWordsGroup.setIdUser(resultSet.getInt("id_user"));
+            relUserWordsGroup.setIdWordsGroup(resultSet.getInt("id_words_group"));
+            relUserWordsGroup.setDateIsert(resultSet.getTimestamp("date_insert"));
         }
     }
 //Update
 //Delete
 
-    public boolean delete(RelWordsGroupWord relWordsGroupWord) throws SQLException {
+    public boolean delete(RelUserWordsGroup relUserWordsGroup) throws SQLException {
         //comprobar si se le pueden poner nulos
-        pStDelete.setInt(1, relWordsGroupWord.getIdWordsGroup());
-        pStDelete.setString(2, relWordsGroupWord.getWord());
+        pStDelete.setInt(1, relUserWordsGroup.getIdUser());
+        pStDelete.setInt(2, relUserWordsGroup.getIdWordsGroup());
+        pStDelete.setTimestamp(3, relUserWordsGroup.getDateIsert());
         return pStDelete.execute();
     }
 }
