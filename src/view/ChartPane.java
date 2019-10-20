@@ -53,9 +53,9 @@ public class ChartPane extends javax.swing.JPanel {
         } catch (Exception e) {;
         }
 
-//        for (WordsGroup wG : WordsGroup.select("select * from wordsGroup order by name")) {
-//            jCBWGroup.addItem(wG);
-//        }            
+        for (WordsGroup wG : WordsGroupLoader.getInstance().readAll()) {
+            jCBWGroup.addItem(wG);
+        }
     }
 
     private void fillTable() throws SQLException {
@@ -64,9 +64,9 @@ public class ChartPane extends javax.swing.JPanel {
 
         String nGroup = jCBWGroup.getSelectedItem().toString();
         int idWordGroup = 0;
-//        for (WordsGroup w : WordsGroup.select("select * from wordsGroup where name='"+nGroup+"'")) {
-//            idWordGroup=w.getId();
-//        }
+        for (WordsGroup w : WordsGroupLoader.getInstance().readAll()) {
+            idWordGroup=w.getId();
+        }
         String select = null;
         switch (jCBWordType.getSelectedIndex()) {
             case 0:

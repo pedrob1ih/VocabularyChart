@@ -33,6 +33,8 @@ public class UserAccountLoader {
     private final String readIndividual = "Select id, name, pass, date_insert from user_account where id=?";
     private PreparedStatement pStDelete;
     private final String delete = "DELETE FROM user_account where id=?";
+    private PreparedStatement pStCorrectLogin;
+    private final String correctLogin = "Select id, name, pass, date_insert from user_account where name=? and pass=?";
 
     public static UserAccountLoader getInstance() throws SQLException {
         if (instance == null) {
@@ -60,6 +62,7 @@ public class UserAccountLoader {
         pStReadAll = connection.prepareStatement(readAll);
         pStReadIndividual = connection.prepareStatement(readIndividual);
         pStDelete = connection.prepareStatement(delete);
+        pStCorrectLogin = connection.prepareStatement(correctLogin);
     }
 
 //Create
@@ -87,9 +90,6 @@ public class UserAccountLoader {
     public void read(UserAccount userAccount) throws SQLException {
         //comprobar si se le pueden poner nulos
         pStReadIndividual.setInt(1, userAccount.getId());
-        pStReadIndividual.setString(2, userAccount.getName());
-        pStReadIndividual.setString(3, userAccount.getPass());
-        pStReadIndividual.setTimestamp(4, userAccount.getDateIsert());
         ResultSet resultSet = pStReadIndividual.executeQuery();
         while (resultSet.next()) {
             userAccount.setId(resultSet.getInt("id"));
@@ -106,4 +106,21 @@ public class UserAccountLoader {
         pStDelete.setInt(1, userAccount.getId());
         return pStDelete.execute();
     }
+
+    //exist
+    public boolean exists(UserAccount userAccount) throws SQLException {
+        //comprobar si se le pueden poner nulos
+        pStReadIndividual.setInt(1, userAccount.getId());
+        ResultSet resultSet = pStReadIndividual.executeQuery();
+        return resultSet.next();
+    }
+    //correct login
+    public boolean correctLogIn(UserAccount userAccount) throws SQLException {
+        //comprobar si se le pueden poner nulos
+        pStCorrectLogin.setString(1, userAccount.getName());
+        pStCorrectLogin.setString(2, userAccount.getPass());
+        ResultSet resultSet = pStCorrectLogin.executeQuery();
+        return resultSet.next();
+    }
+
 }

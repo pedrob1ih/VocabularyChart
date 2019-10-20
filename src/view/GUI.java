@@ -13,20 +13,26 @@ import Data.Conector.MysqlRemoteConector;
  */
 public class GUI extends javax.swing.JFrame {
 
-    private ChartPane chartPane;
-    private InsertingTextPanel insertingText;
+    private final ChartPane chartPane;
+    private final InsertingTextPanel insertingTextPanel;
+    private final LogInPanel logInPanel;
 
     public GUI() {
         initComponents();
 
         MysqlRemoteConector.getInstance();
         chartPane = new ChartPane();
-        chartPane.setVisible(false);
+//        chartPane.setVisible(false);
 
-        insertingText = new InsertingTextPanel();
-        add(insertingText);
-        insertingText.setVisible(true);
-
+        insertingTextPanel = new InsertingTextPanel();
+        add(insertingTextPanel);
+//        insertingTextPanel.setVisible(true);
+        
+        logInPanel = new LogInPanel();
+        add(logInPanel);
+//        logInPanel.setVisible(true);
+        
+        
     }
 
     /**
@@ -67,21 +73,12 @@ public class GUI extends javax.swing.JFrame {
                 jMenu2MouseClicked(evt);
             }
         });
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
-            }
-        });
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-
-    }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
 
@@ -92,7 +89,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu2.setEnabled(false);
 
         chartPane.setVisible(true);
-        insertingText.setVisible(false);
+        insertingTextPanel.setVisible(false);
         add(chartPane);
     }//GEN-LAST:event_jMenu2MouseClicked
 
@@ -101,8 +98,8 @@ public class GUI extends javax.swing.JFrame {
         jMenu2.setEnabled(true);
 
         chartPane.setVisible(false);
-        insertingText.setVisible(true);
-        add(insertingText);
+        insertingTextPanel.setVisible(true);
+        add(insertingTextPanel);
     }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
