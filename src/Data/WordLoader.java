@@ -31,6 +31,8 @@ public class WordLoader {
     private final String readAll = "Select word, meaning, date_insert from words";
     private PreparedStatement pStReadIndividual;
     private final String readIndividual = "Select word, meaning, date_insert from words where word=?";
+    private PreparedStatement pStUpdate;
+    private final String update = "UPDATE words SET meaning = ?, date_insert = ? where word=?";
     private PreparedStatement pStDelete;
     private final String delete = "DELETE FROM words where word=?";
 
@@ -55,11 +57,12 @@ public class WordLoader {
         if (this.mysqlRemoteConector == null) {
             this.mysqlRemoteConector = MysqlRemoteConector.getInstance();
         }
-        this.instance = new WordLoader();
+//        this.instance = new WordLoader();
         Connection connection = mysqlRemoteConector.getConn();
         pStCreate = connection.prepareStatement(create);
         pStReadAll = connection.prepareStatement(readAll);
         pStReadIndividual = connection.prepareStatement(readIndividual);
+        pStUpdate = connection.prepareStatement(update);
         pStDelete = connection.prepareStatement(delete);
     }
 
@@ -88,16 +91,22 @@ public class WordLoader {
     public void read(Word word) throws SQLException {
         //comprobar si se le pueden poner nulos
         pStReadIndividual.setString(1, word.getWord());
-        pStReadIndividual.setString(2, word.getMeaning());
-        pStReadIndividual.setTimestamp(3, word.getDateInsert());
         ResultSet resultSet = pStReadIndividual.executeQuery();
         while (resultSet.next()) {
-            word.setWord(resultSet.getString("name"));
+            word.setWord(resultSet.getString("word"));
             word.setMeaning(resultSet.getString("meaning"));
             word.setDateInsert(resultSet.getTimestamp("date_insert"));
         }
     }
 //Update
+    public boolean update(Word word) throws SQLException {
+        //comprobar si se le pueden poner nulos
+        pStUpdate.setString(1, word.getMeaning());
+        pStUpdate.setTimestamp(2, word.getDateInsert());
+        pStUpdate.setString(3, word.getWord());
+        return pStUpdate.execute();
+    }
+    
 //Delete
 
     public boolean delete(Word word) throws SQLException {
