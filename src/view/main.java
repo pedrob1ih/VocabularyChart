@@ -1,14 +1,11 @@
 package view;
 
-import Data.Conector.MysqlRemoteConector;
+
 import Data.IgnoredWordInAListLoader;
 import Data.WordLoader;
 import Objects.Word;
-import com.mysql.jdbc.MySQLConnection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import objects.IgnoredWordInAList;
 
 public class main {
@@ -24,23 +21,38 @@ public class main {
         word.setMeaning("psada");
         word.setDateInsert(new Timestamp(System.currentTimeMillis()));
 
-        Word word1 = new Word();
-        word1.setWord("AMONT");
-        word1.setMeaning("rio arriba");
-        word1.setDateInsert(new Timestamp(System.currentTimeMillis()));
-
-        Word word2 = new Word();
-        word2.setWord("affichage");
-        word2.setMeaning("poner en pancarta");
-        word2.setDateInsert(new Timestamp(System.currentTimeMillis()));
-
+//        Word word1 = new Word();
+//        word1.setWord("AMONT");
+//        word1.setMeaning("rio arriba");
+//        word1.setDateInsert(new Timestamp(System.currentTimeMillis()));
+//
+//        Word word2 = new Word();
+//        word2.setWord("affichage");
+//        word2.setMeaning("poner en pancarta");
+//        word2.setDateInsert(new Timestamp(System.currentTimeMillis()));
         try {
-            insert_WordLoader(word);
-            insert_WordLoader(word1);
-            insert_WordLoader(word2);
-            Insert_IgnoredWordInAListLoader();
+            if (!insert_WordLoader(word)) {
+                read_WordLoader(word);
+                System.out.println("Palabra insertada read: " + word.getWord() +" "+ word.getMeaning() +" "+ word.getDateInsert());
+            }
 
-            Insert_IgnoredWordInAListLoader();
+            word.setMeaning("bbbb");
+            word.setDateInsert(new Timestamp(System.currentTimeMillis()));
+            
+            if (!update_WordLoader(word)) {
+                read_WordLoader(word);
+                System.out.println("Palabra actualizada read: " + word.getWord() +" "+ word.getMeaning() +" "+ word.getDateInsert());
+            }
+
+            if (!delete_WordLoader(word)) {
+                System.out.println("Palabra borrada no hay registro");
+            } else {
+                read_WordLoader(word);
+                System.out.println("Palabra actualizada read: " + word.getWord() +" "+ word.getMeaning() +" "+ word.getDateInsert());
+            }
+
+
+//            Insert_IgnoredWordInAListLoader();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -90,12 +102,11 @@ public class main {
         WordLoader.getInstance().read(word);
     }
 
-//update IMPLEMENTAR!!!!!!!!!!!!!!
-//    private static void read_WordLoader(Word word) throws SQLException{
-//        WordLoader.getInstance ().update(word);
-//    }
+    private static boolean update_WordLoader(Word word) throws SQLException {
+        return WordLoader.getInstance().update(word);
+    }
     //delete
-    
+
     private static boolean delete_WordLoader(Word word) throws SQLException {
         return WordLoader.getInstance().delete(word);
     }
