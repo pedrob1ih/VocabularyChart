@@ -6,7 +6,6 @@
 package view;
 
 import Data.Conector.MysqlRemoteConector;
-import java.awt.BorderLayout;
 
 /**
  *
@@ -16,19 +15,18 @@ public class GUI extends javax.swing.JFrame {
 
     private ChartPane chartPane;
     private InsertingTextPanel insertingText;
-            
+
     public GUI() {
         initComponents();
 
         MysqlRemoteConector.getInstance();
-        chartPane= new ChartPane();
+        chartPane = new ChartPane();
         chartPane.setVisible(false);
-        
-        insertingText= new InsertingTextPanel();
+
+        insertingText = new InsertingTextPanel();
         add(insertingText);
         insertingText.setVisible(true);
-        
-        
+
     }
 
     /**
@@ -82,17 +80,17 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        
+
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        
+
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         jMenu1.setEnabled(true);
         jMenu2.setEnabled(false);
-        
+
         chartPane.setVisible(true);
         insertingText.setVisible(false);
         add(chartPane);
@@ -101,7 +99,7 @@ public class GUI extends javax.swing.JFrame {
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         jMenu1.setEnabled(false);
         jMenu2.setEnabled(true);
-        
+
         chartPane.setVisible(false);
         insertingText.setVisible(true);
         add(insertingText);

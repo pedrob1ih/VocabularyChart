@@ -1,7 +1,13 @@
 package view;
 
+import Data.WordLoader;
+import Data.WordsGroupLoader;
+import Objects.Word;
 import Objects.WordsGroup;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JToolTip;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,13 +18,12 @@ public class ChartPane extends javax.swing.JPanel {
     //whatShow=1 -- ignore
     //whatShow=2 -- all
     private int whatShow;
-    
+
     public ChartPane() {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
     }
-
 
     @Override
     public JToolTip createToolTip() {
@@ -28,7 +33,7 @@ public class ChartPane extends javax.swing.JPanel {
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
-        if(aFlag){
+        if (aFlag) {
             try {
                 filljCBWGroup();
                 fillTable();
@@ -37,62 +42,62 @@ public class ChartPane extends javax.swing.JPanel {
                 //Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
-    
-    private void filljCBWGroup() throws SQLException{
-        try{
+
+    private void filljCBWGroup() throws SQLException {
+        try {
             for (int i = 0; i < jCBWGroup.getSize().height; i++) {
                 jCBWGroup.removeItemAt(i);
             }
+        } catch (Exception e) {;
         }
-        catch(Exception e){;}
-        
-        
+
 //        for (WordsGroup wG : WordsGroup.select("select * from wordsGroup order by name")) {
 //            jCBWGroup.addItem(wG);
 //        }            
     }
 
-    private void fillTable() throws SQLException{
+    private void fillTable() throws SQLException {
         //mirar lo del combo de irnored
         //mirar la tabla de vocabulario seleccionada
-        
-        String nGroup=jCBWGroup.getSelectedItem().toString();
-        int idWordGroup=0;
+
+        String nGroup = jCBWGroup.getSelectedItem().toString();
+        int idWordGroup = 0;
 //        for (WordsGroup w : WordsGroup.select("select * from wordsGroup where name='"+nGroup+"'")) {
 //            idWordGroup=w.getId();
 //        }
-        String select=null;
-        switch(jCBWordType.getSelectedIndex()){
+        String select = null;
+        switch (jCBWordType.getSelectedIndex()) {
             case 0:
-                select="select * from words where ignoredWord=false and IDWORDGOUP="+idWordGroup+" order by word";
-                whatShow=0;
+                select = "select * from words where ignoredWord=false and IDWORDGOUP=" + idWordGroup + " order by word";
+                whatShow = 0;
                 break;
             case 1:
-                select="select * from words where ignoredWord=true and IDWORDGOUP="+idWordGroup+" order by word";
-                whatShow=1;
+                select = "select * from words where ignoredWord=true and IDWORDGOUP=" + idWordGroup + " order by word";
+                whatShow = 1;
                 break;
             case 2:
-                whatShow=2;
+                whatShow = 2;
                 //to be null
                 ;
                 break;
         }
-        
+
         //wipe the table
-        while(datos.getRowCount()>0)
-            datos.removeRow(datos.getRowCount()-1);
-        
-//        String nameGroup=WordsGroup.select("select * from wordsGroup where id='"+idWordGroup+"' order by id").get(0).getName();
-//        for (Word w : Word.selectWhere(select)) {
-//            if(w!=null){
-//                
-//                Object object[]=new Object[]{nameGroup,w.getWord(),w.getMeaning(),w.getInsertionDate(),w.isIgnoredWord()};
-//                datos.addRow(object);
-//            }
-//        }
-//        filljCBWGroup();
+        while (datos.getRowCount() > 0) {
+            datos.removeRow(datos.getRowCount() - 1);
+        }
+
+        String nameGroup = WordsGroupLoader.getInstance().readAll().get(0).getName();
+        for (Word w : WordLoader.getInstance().readAll()) {
+            if (w != null) {
+
+                Object object[] = new Object[]{nameGroup, w.getWord(), w.getMeaning(), w.getDateInsert(), false};
+                datos.addRow(object);
+            }
+        }
+        filljCBWGroup();
     }
 
     /**
@@ -189,61 +194,70 @@ public class ChartPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
-//        try {
-//            //whatShow=0 -- notIgnore
-//            //whatShow=1 -- ignore
-//            //whatShow=2 -- all
-//            Word w;
-//            switch(whatShow){
-//                case 0:
-//                    // the meaning have to be filled or the not ignore checked
-//                    for(int i = 0;i<datos.getRowCount();i++){
-//                        boolean ignored=(boolean)datos.getValueAt(i,4);
-//                        String meaning=(String)datos.getValueAt(i,2);
-//                        if(ignored || !meaning.equals("")){
-//                            int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
-//                            w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
-//                            try {
-//                                w.update();
-//                            } catch (SQLException ex) {
-//                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                    }
-//                    break;
-//                case 1:
-//                    // the notIgnore have to be unchecked
-//                    for(int i = 0;i<datos.getRowCount();i++){
-//                        boolean ignored=(boolean)datos.getValueAt(i,4);
-//                        String meaning=(String)datos.getValueAt(i,2);
-//                        if(ignored || !meaning.equals("")){
-//                            int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
-//                            w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
-//                            try {
-//                                w.update();
-//                            } catch (SQLException ex) {
-//                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                    }
-//                    break;
-//                case 2:
-//                    // save every thing
-//                    for(int i = 0;i<datos.getRowCount();i++){
-//                        int idGroup=WordsGroup.select("select * from wordsGroup where name='"+(String)datos.getValueAt(i, 0)+"'").get(0).getId();
-//                        w= new Word(idGroup, (String)datos.getValueAt(i, 1), (String)datos.getValueAt(i, 2),(Timestamp)datos.getValueAt(i, 3), (boolean)datos.getValueAt(i, 4));
-//                        try {
-//                            w.update();
-//                        } catch (SQLException ex) {
-////                            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                    break;
-//            }
-//            fillTable();
-//        } catch (SQLException ex) {
-////            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            //whatShow=0 -- notIgnore
+            //whatShow=1 -- ignore
+            //whatShow=2 -- all
+            Word w;
+            switch (whatShow) {
+                case 0:
+                    // the meaning have to be filled or the not ignore checked
+                    for (int i = 0; i < datos.getRowCount(); i++) {
+                        boolean ignored = (boolean) datos.getValueAt(i, 4);
+                        String meaning = (String) datos.getValueAt(i, 2);
+                        if (ignored || !meaning.equals("")) {
+                            int idGroup = WordsGroupLoader.getInstance().readAll().get(0).getId();
+                            w = new Word();
+                            w.setWord((String) datos.getValueAt(i, 1));
+                            w.setMeaning((String) datos.getValueAt(i, 2));
+                            w.setDateInsert((Timestamp) datos.getValueAt(i, 3));
+                            try {
+                                WordLoader.getInstance().update(w);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
+                case 1:
+                    // the notIgnore have to be unchecked
+                    for (int i = 0; i < datos.getRowCount(); i++) {
+                        boolean ignored = (boolean) datos.getValueAt(i, 4);
+                        String meaning = (String) datos.getValueAt(i, 2);
+                        if (ignored || !meaning.equals("")) {
+                            int idGroup = WordsGroupLoader.getInstance().readAll().get(0).getId();
+                            w = new Word();
+                            w.setWord((String) datos.getValueAt(i, 1));
+                            w.setMeaning((String) datos.getValueAt(i, 2));
+                            w.setDateInsert((Timestamp) datos.getValueAt(i, 3));
+                            try {
+                                WordLoader.getInstance().update(w);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    // save every thing
+                    for (int i = 0; i < datos.getRowCount(); i++) {
+                        int idGroup = WordsGroupLoader.getInstance().readAll().get(0).getId();
+                        w = new Word();
+                        w.setWord((String) datos.getValueAt(i, 1));
+                        w.setMeaning((String) datos.getValueAt(i, 2));
+                        w.setDateInsert((Timestamp) datos.getValueAt(i, 3));
+                        try {
+                            WordLoader.getInstance().update(w);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+            }
+            fillTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChartPane.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jBSaveActionPerformed
 
     private void jCBWordTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBWordTypeItemStateChanged
@@ -257,10 +271,9 @@ public class ChartPane extends javax.swing.JPanel {
     private void jCBWGroupItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCBWGroupItemStateChanged
         try {
             fillTable();
-        }
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             //ex.printStackTrace();
-        }       
+        }
     }//GEN-LAST:event_jCBWGroupItemStateChanged
 
 

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author pedro
@@ -57,7 +56,6 @@ public class WordLoader {
         if (this.mysqlRemoteConector == null) {
             this.mysqlRemoteConector = MysqlRemoteConector.getInstance();
         }
-//        this.instance = new WordLoader();
         Connection connection = mysqlRemoteConector.getConn();
         pStCreate = connection.prepareStatement(create);
         pStReadAll = connection.prepareStatement(readAll);
@@ -99,6 +97,7 @@ public class WordLoader {
         }
     }
 //Update
+
     public boolean update(Word word) throws SQLException {
         //comprobar si se le pueden poner nulos
         pStUpdate.setString(1, word.getMeaning());
@@ -106,12 +105,19 @@ public class WordLoader {
         pStUpdate.setString(3, word.getWord());
         return pStUpdate.execute();
     }
-    
-//Delete
 
+//Delete
     public boolean delete(Word word) throws SQLException {
         //comprobar si se le pueden poner nulos
         pStDelete.setString(1, word.getWord());
         return pStDelete.execute();
+    }
+
+    //exist
+    public boolean exist(Word word) throws SQLException {
+        //comprobar si se le pueden poner nulos
+        pStReadIndividual.setString(1, word.getWord());
+        ResultSet resultSet = pStReadIndividual.executeQuery();
+        return resultSet.next();
     }
 }

@@ -55,7 +55,6 @@ public class RelWordsGroupWordLoader {
         if (this.mysqlRemoteConector == null) {
             this.mysqlRemoteConector = MysqlRemoteConector.getInstance();
         }
-        this.instance = new RelWordsGroupWordLoader();
         Connection connection = mysqlRemoteConector.getConn();
         pStCreate = connection.prepareStatement(create);
         pStReadAll = connection.prepareStatement(readAll);

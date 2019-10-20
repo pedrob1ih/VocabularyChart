@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author pedro
@@ -56,7 +55,6 @@ public class WordsGroupLoader {
         if (this.mysqlRemoteConector == null) {
             this.mysqlRemoteConector = MysqlRemoteConector.getInstance();
         }
-        this.instance = new WordsGroupLoader();
         Connection connection = mysqlRemoteConector.getConn();
         pStCreate = connection.prepareStatement(create);
         pStReadAll = connection.prepareStatement(readAll);
@@ -89,8 +87,8 @@ public class WordsGroupLoader {
     public void read(WordsGroup wordsGroup) throws SQLException {
         //comprobar si se le pueden poner nulos
         pStReadIndividual.setInt(1, wordsGroup.getId());
-        pStReadIndividual.setString(2, wordsGroup.getName());
-        pStReadIndividual.setTimestamp(3, wordsGroup.getDate());
+//        pStReadIndividual.setString(2, wordsGroup.getName());
+//        pStReadIndividual.setTimestamp(3, wordsGroup.getDate());
         ResultSet resultSet = pStReadIndividual.executeQuery();
         while (resultSet.next()) {
             wordsGroup.setId(resultSet.getInt("id"));
@@ -105,5 +103,15 @@ public class WordsGroupLoader {
         //comprobar si se le pueden poner nulos
         pStDelete.setInt(1, wordsGroup.getId());
         return pStDelete.execute();
+    }
+
+    //exist
+    public boolean exist(WordsGroup wordsGroup) throws SQLException {
+        //comprobar si se le pueden poner nulos
+        pStReadIndividual.setInt(1, wordsGroup.getId());
+//        pStReadIndividual.setString(2, wordsGroup.getName());
+//        pStReadIndividual.setTimestamp(3, wordsGroup.getDate());
+        ResultSet resultSet = pStReadIndividual.executeQuery();
+        return resultSet.next();
     }
 }

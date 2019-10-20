@@ -1,19 +1,21 @@
 package view;
 
-import busines.MakeVocabulary;
+import Data.WordLoader;
+import Data.WordsGroupLoader;
 import Objects.Word;
 import Objects.WordsGroup;
+import busines.MakeVocabulary;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class InsertingTextPanel extends javax.swing.JPanel {
 
@@ -22,8 +24,8 @@ public class InsertingTextPanel extends javax.swing.JPanel {
      */
     public InsertingTextPanel() {
         initComponents();
-        SimpleDateFormat sDateFormat= new SimpleDateFormat("dd/MM/yyyy");
-        jTFNameGroup.setText((sDateFormat.format(Calendar.getInstance().getTime()))+" - ");
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        jTFNameGroup.setText((sDateFormat.format(Calendar.getInstance().getTime())) + " - ");
     }
 
     /**
@@ -115,35 +117,44 @@ public class InsertingTextPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_JBCopyActionPerformed
 
     private void jBCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCreateActionPerformed
-//        try {
-//            ArrayList list=MakeVocabulary.makeVocabulary(jTAImput.getText());
-//            String listaPalabras="";
-//            Random r= new Random();
-//            WordsGroup wG=null;
-//            int idWordGroup=0;
-//            while(wG==null || wG.exist()){
-//                idWordGroup=r.nextInt(999999999);
-//                wG= new WordsGroup(idWordGroup, jTFNameGroup.getText());
-//            }
-//            wG.insert();
-//            
-//            for (Object list1 : list) {
-//                try {
-//                    Word w= new Word(idWordGroup,(String) list1);
-//                    listaPalabras+="\n"+w.getWord()+" = ";
-//                    if(!w.exist()){
-//                        w.insert();
-//                        System.out.println("palabra "+(String)list1+" insertada");
-//                    }
-//                    
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//            jTAOutput.setText(listaPalabras);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            ArrayList list = MakeVocabulary.makeVocabulary(jTAImput.getText());
+            String listaPalabras = "";
+            Random r = new Random();
+            WordsGroup wG = null;
+            int idWordGroup = 0;
+
+            while (wG == null || WordsGroupLoader.getInstance().exist(wG)) {
+                idWordGroup = r.nextInt(999999999);
+                wG = new WordsGroup();
+                wG.setId(idWordGroup);
+                wG.setName(jTFNameGroup.getText());
+                wG.setDate(new Timestamp(System.currentTimeMillis()));
+            }
+            WordsGroupLoader.getInstance().create(wG);
+
+            for (Object word : list) {
+                try {
+                    Word w = new Word();
+                    w.setWord((String) word);
+                    w.setMeaning("");
+                    w.setDateInsert(new Timestamp(System.currentTimeMillis()));
+                    listaPalabras += "\n" + w.getWord() + " = ";
+
+                    if (!WordLoader.getInstance().exist(w)) {
+                        if (!WordLoader.getInstance().create(w)) {
+                            System.out.println("palabra " + (String) word + " insertada");
+                        }
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            jTAOutput.setText(listaPalabras);
+        } catch (SQLException ex) {
+            Logger.getLogger(InsertingTextPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jBCreateActionPerformed
 
     private void jTFNameGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTFNameGroupActionPerformed
@@ -153,7 +164,7 @@ public class InsertingTextPanel extends javax.swing.JPanel {
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag); //To change body of generated methods, choose Tools | Templates.
-        if(aFlag){
+        if (aFlag) {
             jTAImput.setText("");
             jTAOutput.setText("");
             jTFNameGroup.setText("Default list");
