@@ -6,6 +6,7 @@
 package view;
 
 import Data.Conector.MysqlRemoteConector;
+import objects.UserAccount;
 
 /**
  *
@@ -16,23 +17,27 @@ public class GUI extends javax.swing.JFrame {
     private final ChartPane chartPane;
     private final InsertingTextPanel insertingTextPanel;
     private final LogInPanel logInPanel;
+    private UserAccount userAccount;
 
     public GUI() {
         initComponents();
-
-        MysqlRemoteConector.getInstance();
-        chartPane = new ChartPane();
-//        chartPane.setVisible(false);
-
+        userAccount = new UserAccount();
+        
         insertingTextPanel = new InsertingTextPanel();
-        add(insertingTextPanel);
-//        insertingTextPanel.setVisible(true);
+//        add(insertingTextPanel);
+        insertingTextPanel.setVisible(false);
         
-        logInPanel = new LogInPanel();
+        chartPane = new ChartPane(userAccount);
+//        add(chartPane);
+        chartPane.setVisible(false);
+
+        logInPanel = new LogInPanel(userAccount);
         add(logInPanel);
-//        logInPanel.setVisible(true);
-        
-        
+        logInPanel.setVisible(true);
+    }
+
+    public void mostrarVentanaInsercion() {
+        insertingTextPanel.setVisible(true);
     }
 
     /**
@@ -60,11 +65,6 @@ public class GUI extends javax.swing.JFrame {
                 jMenu1MouseClicked(evt);
             }
         });
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
-            }
-        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Vocabulary Chart");
@@ -80,26 +80,24 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-
-    }//GEN-LAST:event_jMenu1ActionPerformed
-
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         jMenu1.setEnabled(true);
         jMenu2.setEnabled(false);
 
+        remove(insertingTextPanel);
+        add(chartPane);
         chartPane.setVisible(true);
         insertingTextPanel.setVisible(false);
-        add(chartPane);
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         jMenu1.setEnabled(false);
         jMenu2.setEnabled(true);
 
+        remove(chartPane);
+        add(insertingTextPanel);
         chartPane.setVisible(false);
         insertingTextPanel.setVisible(true);
-        add(insertingTextPanel);
     }//GEN-LAST:event_jMenu1MouseClicked
 
     /**

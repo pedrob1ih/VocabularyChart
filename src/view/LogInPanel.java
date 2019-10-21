@@ -12,9 +12,13 @@ public class LogInPanel extends javax.swing.JPanel {
     /**
      * Creates new form InsertingText
      */
-    public LogInPanel() {
+
+    private UserAccount userAccount;
+    
+    public LogInPanel(UserAccount userAccount) {
         initComponents();
         jLabel1.setVisible(false);
+        this.userAccount=userAccount;
     }
 
     /**
@@ -49,7 +53,7 @@ public class LogInPanel extends javax.swing.JPanel {
         });
 
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField3.setText("Pass word");
+        jTextField3.setText("Password");
         jTextField3.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jTextField3FocusGained(evt);
@@ -109,7 +113,6 @@ public class LogInPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        UserAccount userAccount = new UserAccount();
         userAccount.setName(jTextField2.getText());
         userAccount.setPass(jTextField3.getText());
         try {

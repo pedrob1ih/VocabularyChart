@@ -1,15 +1,19 @@
 package view;
 
+import Data.RelUserWordsGroupLoader;
 import Data.WordLoader;
 import Data.WordsGroupLoader;
 import Objects.Word;
 import Objects.WordsGroup;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JToolTip;
 import javax.swing.table.DefaultTableModel;
+import objects.RelUserWordsGroup;
+import objects.UserAccount;
 
 public class ChartPane extends javax.swing.JPanel {
 
@@ -19,10 +23,13 @@ public class ChartPane extends javax.swing.JPanel {
     //whatShow=2 -- all
     private int whatShow;
 
-    public ChartPane() {
+    private UserAccount userAccount;
+
+    public ChartPane(UserAccount userAccount) {
         initComponents();
         datos = (DefaultTableModel) jTable1.getModel();
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(1);
+        this.userAccount = userAccount;
     }
 
     @Override
@@ -53,7 +60,20 @@ public class ChartPane extends javax.swing.JPanel {
         } catch (Exception e) {;
         }
 
-        for (WordsGroup wG : WordsGroupLoader.getInstance().readAll()) {
+        RelUserWordsGroup relUserWordsGroup = new RelUserWordsGroup();
+        relUserWordsGroup.setIdUser(userAccount.getId());
+        ArrayList<RelUserWordsGroup> lRelUserWordsGroup = RelUserWordsGroupLoader.getInstance().listPerUser(relUserWordsGroup);
+        WordsGroupLoader wgl = WordsGroupLoader.getInstance();
+        ArrayList<WordsGroup> lWordsGroups = new ArrayList<>();
+        for (RelUserWordsGroup lRelUserWordsGroup1 : lRelUserWordsGroup) {
+            WordsGroup wg = new WordsGroup();
+            wg.setId(lRelUserWordsGroup1.getIdWordsGroup());
+            wgl.read(wg);
+            if (wg.getName() != null) {
+                lWordsGroups.add(wg);
+            }
+        }
+        for (WordsGroup wG : lWordsGroups) {
             jCBWGroup.addItem(wG);
         }
     }
@@ -65,7 +85,7 @@ public class ChartPane extends javax.swing.JPanel {
         String nGroup = jCBWGroup.getSelectedItem().toString();
         int idWordGroup = 0;
         for (WordsGroup w : WordsGroupLoader.getInstance().readAll()) {
-            idWordGroup=w.getId();
+            idWordGroup = w.getId();
         }
         String select = null;
         switch (jCBWordType.getSelectedIndex()) {

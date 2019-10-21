@@ -73,7 +73,7 @@
     <Component class="javax.swing.JTextField" name="jTextField3">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Pass word"/>
+        <Property name="text" type="java.lang.String" value="Password"/>
       </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jTextField3FocusGained"/>

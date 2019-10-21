@@ -114,13 +114,22 @@ public class UserAccountLoader {
         ResultSet resultSet = pStReadIndividual.executeQuery();
         return resultSet.next();
     }
+
     //correct login
     public boolean correctLogIn(UserAccount userAccount) throws SQLException {
+        boolean isFound = false;
         //comprobar si se le pueden poner nulos
         pStCorrectLogin.setString(1, userAccount.getName());
         pStCorrectLogin.setString(2, userAccount.getPass());
         ResultSet resultSet = pStCorrectLogin.executeQuery();
-        return resultSet.next();
+        while (resultSet.next()) {
+            isFound = true;
+            userAccount.setId(resultSet.getInt("id"));
+            userAccount.setName(resultSet.getString("name"));
+            userAccount.setPass(resultSet.getString("pass"));
+            userAccount.setDateIsert(resultSet.getTimestamp("date_insert"));
+        }
+        return isFound;
     }
 
 }

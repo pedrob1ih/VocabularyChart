@@ -1,2 +1,0 @@
-Data.WordLoader
-Data.UserAccountLoader

@@ -30,6 +30,7 @@ CREATE TABLE rel_user_wordsgroup  (
     FOREIGN KEY(id_words_group) REFERENCES wordsGroup(id)
 );
 
+
 CREATE TABLE words  (
     word char(50) NOT NULL,
     meaning char(50) NOT NULL,
@@ -56,6 +57,7 @@ CREATE TABLE ignored_word_in_a_list (
     FOREIGN KEY(word) REFERENCES words(word)
 );
 
+/*USUARIOS*/
 INSERT INTO user_account 
     (name, pass, date_insert) values
     ("pedro","caracola",now());
@@ -63,24 +65,114 @@ INSERT INTO user_account
 INSERT INTO user_account 
     (name, pass, date_insert) values
     ("paco","zorro",now());
-    
-INSERT INTO words 
-    (word, meaning, date_insert) values
-    ("epojé","epoca",now());
-INSERT INTO words 
-    (word, meaning, date_insert) values
-    ("agora","plaza",now());
-    
-INSERT INTO wordsGroup 
-    (name, date_insert) values
-    ("Palabras que no me se pero acabaré sabiendo",now());    
+/*END_USUARIOS  */  
+
+/*WORDS*/
+    /*Lista de vocabulario uno*/
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("epojé","epoca",now());
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("agora","plaza",now());
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("tâches","tareas",now());
+    /*END_Lista de vocabulario uno  */  
+
+    /*Lista de vocabulario dos*/
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("amont","rio arriba",now());
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("affichage","objetivo",now());
+    /*END_Lista de vocabulario dos*/
+
+    /*Lista de vocabulario tres*/
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("aujourd'hui","hoy",now());
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("bonjour","hola",now());
+        INSERT INTO words 
+            (word, meaning, date_insert) values
+            ("tant","tanto",now());
+    /*END_Lista de vocabulario tres   */ 
+/*END_WORDS */   
+
+/*WORDS_GROUP*/
+    INSERT INTO wordsGroup 
+        (name, date_insert) values
+        ("Lista de vocabulario uno",now());
+    INSERT INTO wordsGroup 
+        (name, date_insert) values
+        ("Lista de vocabulario dos",now());
+    INSERT INTO wordsGroup 
+        (name, date_insert) values
+        ("Lista de vocabulario tres",now());    
+/*END_WORDS_GROUP*/
+
+/*rel_user_wordsgroup*/
+    INSERT INTO rel_user_wordsgroup 
+        (id_user, id_words_group, date_insert) VALUES
+        (1, 1, now());
+    INSERT INTO rel_user_wordsgroup 
+        (id_user, id_words_group, date_insert) VALUES
+        (1, 2, now());
+    INSERT INTO rel_user_wordsgroup 
+        (id_user, id_words_group, date_insert) VALUES
+        (2, 3, now());    
+/*END_rel_user_wordsgroup*/
+
+/*rel_wordsgroup_word*/
+
+    /*Lista de vocabulario uno*/
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (1, "epojé");
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (1, "agora");
+    /*END_Lista de vocabulario uno    */
+
+    /*Lista de vocabulario dos*/
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (2, "amont");
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (2, "affichage");    
+    /*END_Lista de vocabulario dos*/
+
+    /*Lista de vocabulario tres*/
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (3, "aujourd'hui");
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (3, "bonjour"); 
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (3, "tant");             
+    /*END_Lista de vocabulario tres   */ 
+    /*palabra que esta en todas las listas   */ 
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (1, "tâches");  
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (2, "tâches");              
+        INSERT INTO rel_wordsgroup_word 
+            (id_words_group, word) values
+            (3, "tâches");                          
+    /*END_palabra que esta en todas las listas   */ 
+/*END_rel_wordsgroup_word*/    
     
 INSERT INTO ignored_word_in_a_list 
     (id_user, id_words_group, word, date_insert) VALUES 
     (1, 1, "epojé", now());
-    
-DELETE FROM ignored_word_in_a_list WHERE id_user=1 and id_words_group=1 and word="epojé";
-
-mysql –u root –p
-
-GRANT ALL ON GRv0uSguq8.* TO GRv0uSguq8@`remotemysql.com` IDENTIFIED BY `BL0y8JnMPB`;
+INSERT INTO ignored_word_in_a_list 
+    (id_user, id_words_group, word, date_insert) VALUES 
+    (1, 2, "amont", now());    
